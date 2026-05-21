@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light">
+  <title>{{ if .Title }}{{ .Title }} — {{ end }}Bruff.me</title>
+  <meta name="description" content="{{ if .Description }}{{ .Description }}{{ else }}Nick Broughall — tech journalist, writing about everything else.{{ end }}">
+
+  <link rel="canonical" href="{{ .Permalink }}">
+  <link rel="alternate" type="application/rss+xml" title="Bruff.me" href="/feed.xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="{{ "/css/main.css" | absURL }}">
+
+  <meta property="og:title" content="{{ if .Title }}{{ .Title }}{{ else }}Bruff.me{{ end }}">
+  <meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}">
+  <meta property="og:url" content="{{ .Permalink }}">
+  {{ with .Params.image }}<meta property="og:image" content="{{ . }}">{{ end }}
+</head>
+<body>
+
+  {{ partial "header.html" . }}
+
+  <main class="site-main">
+    {{ block "main" . }}{{ end }}
+  </main>
+
+  {{ partial "footer.html" . }}
+
+  <script src="{{ "/js/main.js" | absURL }}"></script>
+
+</body>
+</html>
