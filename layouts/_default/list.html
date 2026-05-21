@@ -1,0 +1,35 @@
+{{ define "main" }}
+
+<div class="list-page">
+  <div class="list-header">
+    <h1 class="list-title">{{ .Title }}</h1>
+    {{ with .Description }}
+    <p class="list-description">{{ . }}</p>
+    {{ end }}
+  </div>
+
+  <div class="list-layout">
+    <div class="stream-column">
+      <div class="stream">
+        {{ range .Paginator.Pages }}
+          {{ partial "post-card.html" . }}
+        {{ end }}
+      </div>
+
+      {{ if .Paginator.HasNext }}
+      <div class="pagination">
+        <button
+          class="load-more-btn"
+          data-next="{{ .Paginator.Next.URL }}"
+        >
+          Load more
+        </button>
+      </div>
+      {{ end }}
+    </div>
+
+    {{ partial "sidebar.html" . }}
+  </div>
+</div>
+
+{{ end }}
