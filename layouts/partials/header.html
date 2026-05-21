@@ -1,0 +1,15 @@
+<header class="site-header">
+  <a href="/" class="site-name">Bruff<em>.me</em></a>
+  <button class="nav-toggle" aria-label="Toggle navigation">
+    <span></span><span></span><span></span>
+  </button>
+  <nav class="site-nav">
+    <a href="/" {{ if .IsHome }}class="active"{{ end }}>Stream</a>
+    <a href="/longer/" {{ if eq .Section "longer" }}class="active"{{ end }}>Longer</a>
+    <a href="/photos/" {{ if eq .Section "photos" }}class="active"{{ end }}>Photos</a>
+    <a href="/books/" {{ if eq .Section "books" }}class="active"{{ end }}>Bookshelf</a>
+    <a href="/stats/" {{ if eq .RelPermalink "/stats/" }}class="active"{{ end }}>Stats</a>
+    <a href="/about/" {{ if eq .RelPermalink "/about/" }}class="active"{{ end }}>About</a>
+    <a href="/tweets/" class="nav-dim">Tweets</a>
+  </nav>
+</header>
