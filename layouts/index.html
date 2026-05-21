@@ -1,0 +1,54 @@
+{{ define "main" }}
+
+<div class="hero">
+  <div class="hero-avatar">
+    {{ with .Site.Params.avatar }}
+    <img src="{{ . }}" alt="Nick Broughall">
+    {{ end }}
+  </div>
+  <div class="hero-text">
+    <h1>Nick Broughall.<br><em>Writing again.</em></h1>
+    <p>Tech journalist with 20+ years behind me. Running <a href="https://bttr.reviews">BTTR.reviews</a>. Writing here about everything else — music, family, food, the odd rant, and the weird stuff in between.</p>
+    <div class="hero-links">
+      <a href="https://bttr.reviews" target="_blank" rel="noopener">BTTR.reviews ↗</a>
+      <a href="https://bsky.app/profile/bruff.me" target="_blank" rel="noopener">Bluesky ↗</a>
+      <a href="https://www.instagram.com/bttrreviews/" target="_blank" rel="noopener">Instagram ↗</a>
+      <a href="https://www.youtube.com/@bttrreviews" target="_blank" rel="noopener">YouTube ↗</a>
+    </div>
+  </div>
+</div>
+
+<div class="layout">
+  <div class="stream-column">
+    <div class="stream-filters">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="longer">Longer</button>
+      <button class="filter-btn" data-filter="micro">Quick takes</button>
+      <button class="filter-btn" data-filter="photo">Photos</button>
+      <button class="filter-btn" data-filter="music">Music</button>
+      <button class="filter-btn" data-filter="watching">Watching</button>
+      <button class="filter-btn" data-filter="reading">Reading</button>
+    </div>
+
+    <div class="stream" id="post-stream">
+      {{ range .Paginator.Pages }}
+        {{ partial "post-card.html" . }}
+      {{ end }}
+    </div>
+
+    {{ if .Paginator.HasNext }}
+    <div class="pagination">
+      <button
+        class="load-more-btn"
+        data-next="{{ .Paginator.Next.URL }}"
+      >
+        Load more
+      </button>
+    </div>
+    {{ end }}
+  </div>
+
+  {{ partial "sidebar.html" . }}
+</div>
+
+{{ end }}
