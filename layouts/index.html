@@ -31,7 +31,7 @@
     </div>
 
     <div class="stream" id="post-stream">
-      {{ range where .Paginator.Pages "Kind" "page" }}
+      {{ range where .Paginator.Pages "RelPermalink" "not in" (slice "/replies/" "/photos/" "/archive/" "/about/" "/stats/" "/books/" "/tweets/") }}
         {{ partial "post-card.html" . }}
       {{ end }}
     </div>
