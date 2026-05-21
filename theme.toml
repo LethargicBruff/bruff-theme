@@ -1,0 +1,9 @@
+name = "bruff-me"
+license = "MIT"
+description = "Custom theme for bruff.me"
+homepage = "https://bruff.me"
+min_version = "0.19"
+
+[author]
+  name = "Nick Broughall"
+  homepage = "https://bruff.me"
