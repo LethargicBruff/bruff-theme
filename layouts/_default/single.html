@@ -1,0 +1,178 @@
+{{ define "main" }}
+
+{{ $content := .Content }}
+{{ $plainContent := .Plain }}
+{{ $wordCount := .WordCount }}
+{{ $hasTitle := .Title }}
+{{ $hasImage := findRE "<img" $content }}
+
+{{ $isMicro := and (not $hasTitle) (lt $wordCount 80) }}
+{{ $isPhoto := and (not $hasTitle) $hasImage }}
+{{ $isLonger := $hasTitle }}
+
+{{ $isWatching := or (findRE "(?i)^watched" $plainContent) (findRE "(?i)watching" ($plainContent | truncate 60)) }}
+{{ $isReading := or (findRE "(?i)^finished reading" $plainContent) (findRE "(?i)^reading" ($plainContent | truncate 60)) }}
+
+{{ if $isLonger }}
+<div class="breadcrumb-bar">
+  <div class="breadcrumb">
+    <a href="/">Stream</a>
+    <span>→</span>
+    <a href="/longer/">Longer</a>
+    <span>→</span>
+    {{ .Title | truncate 40 }}
+  </div>
+</div>
+
+<article class="longer-post">
+  <header class="longer-header">
+    <div class="post-kicker">
+      <span class="post-tag tag-longer">Longer</span>
+      <span class="post-kicker-date">{{ .Date.Format "2 January 2006" }}</span>
+      {{ if gt $wordCount 200 }}
+      <span class="post-kicker-date">· {{ div $wordCount 200 }} min read</span>
+      {{ end }}
+    </div>
+    <h1>{{ .Title }}</h1>
+    {{ with .Params.standfirst }}
+    <p class="standfirst">{{ . }}</p>
+    {{ else }}
+      {{ with .Summary }}
+      <p class="standfirst">{{ . | plainify | truncate 200 }}</p>
+      {{ end }}
+    {{ end }}
+    <div class="post-byline">
+      <div class="byline-avatar">
+        {{ with .Site.Params.avatar }}<img src="{{ . }}" alt="Nick">{{ end }}
+      </div>
+      <div class="byline-text">
+        <strong>Nick Broughall</strong>
+        <span class="byline-sep">·</span>
+        Sydney, Australia
+      </div>
+    </div>
+  </header>
+
+  <div class="post-body">
+    {{ $content }}
+  </div>
+
+  <footer class="post-footer">
+    <div class="post-footer-tags">
+      {{ range .Params.tags }}
+      <a href="/tags/{{ . | urlize }}/" class="post-footer-tag">{{ . }}</a>
+      {{ end }}
+    </div>
+    <div class="post-nav">
+      {{ with .PrevInSection }}<a href="{{ .Permalink }}">← {{ .Title | truncate 30 }}</a>{{ end }}
+      {{ with .NextInSection }}<a href="{{ .Permalink }}">{{ .Title | truncate 30 }} →</a>{{ end }}
+    </div>
+  </footer>
+</article>
+
+{{ else if $isPhoto }}
+<div class="breadcrumb-bar">
+  <div class="breadcrumb">
+    <a href="/">Stream</a>
+    <span>→</span>
+    <a href="/photos/">Photos</a>
+    <span>→</span>
+    {{ .Date.Format "2 Jan 2006" }}
+  </div>
+</div>
+
+<div class="photo-post-page">
+  {{ $imgs := findRE `<img[^>]+>` $content }}
+  {{ $firstImg := index $imgs 0 }}
+  {{ if $firstImg }}
+  <div class="photo-hero">
+    {{ $firstImg | safeHTML }}
+  </div>
+  {{ end }}
+
+  <div class="photo-meta-row">
+    <div class="photo-byline-bar">
+      <div class="photo-byline-left">
+        <div class="photo-byline-avatar">
+          {{ with .Site.Params.avatar }}<img src="{{ . }}" alt="Nick">{{ end }}
+        </div>
+        <div class="photo-byline-text">
+          <strong>Nick Broughall</strong>
+        </div>
+      </div>
+      <div class="photo-byline-date">{{ .Date.Format "2 January 2006" }}</div>
+    </div>
+
+    {{ $textOnly := $content | replaceRE `<img[^>]+>` "" | replaceRE `<[^>]+>` "" | strings.TrimSpace }}
+    {{ if $textOnly }}
+    <p class="photo-caption">{{ $textOnly }}</p>
+    {{ end }}
+  </div>
+
+  {{ if gt (len $imgs) 1 }}
+  <div class="photo-grid-gallery">
+    {{ range after 1 $imgs }}
+    <div class="gallery-cell">{{ . | safeHTML }}</div>
+    {{ end }}
+  </div>
+  {{ end }}
+
+  <div class="post-nav" style="margin-top:2rem;">
+    {{ with .Prev }}<a href="{{ .Permalink }}">← Previous</a>{{ end }}
+    {{ with .Next }}<a href="{{ .Permalink }}">Next →</a>{{ end }}
+  </div>
+</div>
+
+{{ else }}
+{{ $dotClass := "dot-thought" }}
+{{ $microLabel := "" }}
+{{ if $isWatching }}{{ $dotClass = "dot-watch" }}{{ $microLabel = "Watching" }}{{ end }}
+{{ if $isReading }}{{ $dotClass = "dot-read" }}{{ $microLabel = "Reading" }}{{ end }}
+
+<div class="micro-post-page">
+  <div class="micro-header">
+    <div class="micro-avatar">
+      {{ with .Site.Params.avatar }}<img src="{{ . }}" alt="Nick">{{ end }}
+    </div>
+    <div class="micro-meta">
+      <strong>Nick Broughall</strong>
+      <time datetime="{{ .Date.Format "2006-01-02T15:04:05" }}">{{ .Date.Format "2 January 2006 at 3:04pm" }}</time>
+    </div>
+  </div>
+
+  <div class="micro-content">
+    {{ $content }}
+  </div>
+
+  <div class="micro-actions">
+    <a href="{{ .Permalink }}" class="micro-action">↩ Permalink</a>
+    {{ with .Prev }}<a href="{{ .Permalink }}" class="micro-action">← Previous</a>{{ end }}
+    {{ with .Next }}<a href="{{ .Permalink }}" class="micro-action">Next →</a>{{ end }}
+  </div>
+
+  {{ if $microLabel }}
+  <div class="micro-context">
+    <div class="micro-context-dot {{ $dotClass }}"></div>
+    <p>Posted in <strong>{{ $microLabel }}</strong> — <a href="/{{ $microLabel | lower }}/">See all →</a></p>
+  </div>
+  {{ end }}
+
+  <div class="nearby-posts">
+    <div class="nearby-label">More from the stream</div>
+    {{ $current := . }}
+    {{ range first 4 .Site.RegularPages }}
+      {{ if ne .Permalink $current.Permalink }}
+      <div class="nearby-item">
+        <div class="nearby-dot"></div>
+        <div>
+          <a href="{{ .Permalink }}">{{ if .Title }}{{ .Title }}{{ else }}{{ .Plain | truncate 80 }}{{ end }}</a>
+        </div>
+      </div>
+      {{ end }}
+    {{ end }}
+  </div>
+</div>
+
+{{ end }}
+
+{{ end }}
