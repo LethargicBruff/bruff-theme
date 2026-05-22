@@ -126,10 +126,14 @@
   <article class="post-micro" data-type="{{ $dataType }}">
     <div class="micro-dot {{ $dotClass }}"></div>
     <div class="micro-body">
+      {{ if $tagLabel }}
+      <div class="post-meta-row" style="margin-bottom:0.35rem;">
+        <span class="post-tag {{ $tagClass }}">{{ $tagLabel }}</span>
+      </div>
+      {{ end }}
       <div class="micro-text">{{ $content }}</div>
       <div class="micro-footer">
         <a href="{{ .Permalink }}" class="micro-time">{{ .Date.Format "2 Jan 2006 · 3:04pm" }}</a>
-        {{ if $tagLabel }}<span class="micro-label">{{ $tagLabel }}</span>{{ end }}
       </div>
     </div>
   </article>
