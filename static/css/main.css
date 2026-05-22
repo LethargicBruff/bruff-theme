@@ -393,9 +393,8 @@ img, video { max-width: 100%; height: auto; display: block; }
 .micro-text video {
   margin-top: 0.5rem;
   border-radius: 8px;
-  max-height: 280px;
-  max-width: 60%;
-  width: auto;
+  width: 100%;
+  max-height: 220px;
   object-fit: cover;
 }
 
