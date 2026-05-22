@@ -5,56 +5,27 @@
 'use strict';
 
 const CONFIG = {
-  bttrFeedUrl: 'https://bttr.reviews/rss/',
-  ytFeedUrl:   'https://www.youtube.com/feeds/videos.xml?channel_id=UCAoGBE-IIXgXhnLH5VClteQ',
-  mbJsonFeed:  '/feeds/json',
-  corsProxy:   'https://api.allorigins.win/raw?url=',
+  rss2jsonBase: 'https://api.rss2json.com/v1/api.json?rss_url=',
+  bttrFeedUrl:  'https://bttr.reviews/rss/',
+  ytFeedUrl:    'https://www.youtube.com/feeds/videos.xml?channel_id=UCAoGBE-IIXgXhnLH5VClteQ',
+  mbJsonFeed:   '/feeds/json',
 };
-
-function qs(sel, ctx)  { return (ctx || document).querySelector(sel); }
-function qsa(sel, ctx) { return (ctx || document).querySelectorAll(sel); }
-
-function timeAgo(dateStr) {
-  const now  = new Date();
-  const then = new Date(dateStr);
-  const secs = Math.floor((now - then) / 1000);
-  if (secs < 60)    return 'just now';
-  if (secs < 3600)  return Math.floor(secs / 60) + 'm ago';
-  if (secs < 86400) return Math.floor(secs / 3600) + 'h ago';
-  if (secs < 604800) return Math.floor(secs / 86400) + 'd ago';
-  return then.toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' });
-}
-
-async function fetchXml(url) {
-  const res = await fetch(CONFIG.corsProxy + encodeURIComponent(url));
-  if (!res.ok) throw new Error('fetch failed: ' + res.status);
-  const text = await res.text();
-  return new DOMParser().parseFromString(text, 'application/xml');
-}
-
-function safeSetHtml(id, html) {
-  const el = document.getElementById(id);
-  if (el) el.innerHTML = html;
-}
-
-/* ── BTTR FEED ── */
 
 async function loadBttrFeed() {
   try {
-    const xml   = await fetchXml(CONFIG.bttrFeedUrl);
-    const items = Array.from(xml.querySelectorAll('item')).slice(0, 4);
+    const res = await fetch(CONFIG.rss2jsonBase + encodeURIComponent(CONFIG.bttrFeedUrl));
+    if (!res.ok) throw new Error('fetch failed');
+    const data = await res.json();
+    const items = (data.items || []).slice(0, 4);
 
     const html = items.map(item => {
-      const title   = item.querySelector('title')?.textContent || '';
-      const link    = item.querySelector('link')?.textContent || '#';
-      const date    = item.querySelector('pubDate')?.textContent || '';
-      const dateStr = date ? new Date(date).toLocaleDateString('en-AU', {
+      const dateStr = item.pubDate ? new Date(item.pubDate).toLocaleDateString('en-AU', {
         day: 'numeric', month: 'short', year: 'numeric'
       }) : '';
       return `
         <div class="bttr-item">
-          <a href="${link}" target="_blank" rel="noopener">
-            <div class="bttr-item-title">${title}</div>
+          <a href="${item.link}" target="_blank" rel="noopener">
+            <div class="bttr-item-title">${item.title}</div>
             <div class="bttr-item-meta">${dateStr}</div>
           </a>
         </div>`;
@@ -67,27 +38,24 @@ async function loadBttrFeed() {
   }
 }
 
-/* ── YOUTUBE FEED ── */
-
 async function loadYtFeed() {
   try {
-    const xml   = await fetchXml(CONFIG.ytFeedUrl);
-    const items = Array.from(xml.querySelectorAll('entry')).slice(0, 3);
+    const res = await fetch(CONFIG.rss2jsonBase + encodeURIComponent(CONFIG.ytFeedUrl));
+    if (!res.ok) throw new Error('fetch failed');
+    const data = await res.json();
+    const items = (data.items || []).slice(0, 3);
 
     const html = items.map(item => {
-      const title     = item.querySelector('title')?.textContent || '';
-      const link      = item.querySelector('link')?.getAttribute('href') || '#';
-      const published = item.querySelector('published')?.textContent || '';
-      const videoId   = item.querySelector('videoId')?.textContent || '';
-      const thumb     = videoId ? `https://i.ytimg.com/vi/${videoId}/mqdefault.jpg` : '';
-      const dateStr   = published ? timeAgo(published) : '';
+      const videoId = item.link?.match(/v=([^&]+)/)?.[1] || '';
+      const thumb = videoId ? `https://i.ytimg.com/vi/${videoId}/mqdefault.jpg` : '';
+      const dateStr = item.pubDate ? timeAgo(item.pubDate) : '';
       return `
-        <a href="${link}" target="_blank" rel="noopener" class="yt-item">
+        <a href="${item.link}" target="_blank" rel="noopener" class="yt-item">
           <div class="yt-thumb">
             ${thumb ? `<img src="${thumb}" alt="" loading="lazy">` : ''}
           </div>
           <div>
-            <div class="yt-item-title">${title}</div>
+            <div class="yt-item-title">${item.title}</div>
             <span class="yt-item-date">${dateStr}</span>
           </div>
         </a>`;
