@@ -54,10 +54,17 @@
   {{ $tagClass = "tag-work" }}
 {{ end }}
 
-{{ $dotClass := "dot-thought" }}
+{{ $dotClass := "dot-default" }}
 {{ $microLabel := "" }}
-{{ if $isWatching }}{{ $dotClass = "dot-watch" }}{{ $microLabel = "Watching" }}{{ end }}
-{{ if $isReading }}{{ $dotClass = "dot-read" }}{{ $microLabel = "Reading" }}{{ end }}
+{{ if $isMusic }}{{ $dotClass = "dot-music" }}{{ end }}
+{{ if $isWatching }}{{ $dotClass = "dot-watching" }}{{ $microLabel = "Watching" }}{{ end }}
+{{ if $isReading }}{{ $dotClass = "dot-reading" }}{{ $microLabel = "Reading" }}{{ end }}
+{{ if $isFood }}{{ $dotClass = "dot-food" }}{{ end }}
+{{ if $isGames }}{{ $dotClass = "dot-games" }}{{ end }}
+{{ if $isSport }}{{ $dotClass = "dot-sport" }}{{ end }}
+{{ if $isParenting }}{{ $dotClass = "dot-parenting" }}{{ end }}
+{{ if $isTravel }}{{ $dotClass = "dot-travel" }}{{ end }}
+{{ if $isWork }}{{ $dotClass = "dot-work" }}{{ end }}
 
 {{ $dataType := "micro" }}
 {{ if $isLonger }}{{ $dataType = "longer" }}{{ end }}
