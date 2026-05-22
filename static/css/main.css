@@ -48,7 +48,7 @@ body {
 }
 
 a { color: inherit; }
-img { max-width: 100%; height: auto; display: block; }
+img, video { max-width: 100%; height: auto; display: block; }
 
 /* ── HEADER ─────────────────────────────── */
 
@@ -389,11 +389,14 @@ img { max-width: 100%; height: auto; display: block; }
 .micro-text p:last-child { margin-bottom: 0; }
 .micro-text strong { color: var(--accent); }
 
-.micro-text img {
+.micro-text img,
+.micro-text video {
   margin-top: 0.5rem;
   border-radius: 8px;
-  max-height: 320px;
+  max-height: 280px;
+  max-width: 60%;
   width: auto;
+  object-fit: cover;
 }
 
 .micro-footer {
