@@ -1277,3 +1277,51 @@ img, video { max-width: 100%; height: auto; display: block; }
   .photo-grid-gallery { margin-left: -1rem; margin-right: -1rem; }
   .breadcrumb-bar { padding-left: 1rem; padding-right: 1rem; }
 }
+
+/* ── BOOKSHELF PLUGIN ────────────────────── */
+
+#bookshelves {
+  padding: 2rem;
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.bookshelf {
+  margin-bottom: 3rem;
+}
+
+.bookshelf h2 {
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.4rem;
+  color: var(--ink);
+}
+
+.bookshelf p {
+  font-size: 0.9rem;
+  color: var(--ink-muted);
+  margin-bottom: 1.25rem;
+}
+
+.bookshelf .book {
+  display: inline-block;
+  margin: 0 0.5rem 0.75rem 0;
+  vertical-align: top;
+}
+
+.bookshelf .book img {
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  transition: transform 0.2s ease;
+  display: block;
+}
+
+.bookshelf .book img:hover {
+  transform: translateY(-3px);
+}
+
+.bookshelf .book a {
+  text-decoration: none;
+}
