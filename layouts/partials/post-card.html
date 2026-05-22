@@ -8,7 +8,10 @@
 {{ $isLonger := $hasTitle }}
 {{ $isReply := findRE `^\s*@` $plainContent }}
 
-{{ $cats := .Params.categories }}
+{{ $cats := slice }}
+{{ range .GetTerms "categories" }}
+  {{ $cats = $cats | append .Title }}
+{{ end }}
 {{ $isMusic    := $cats | intersect (slice "Music") }}
 {{ $isWatching := $cats | intersect (slice "Movies and TV") }}
 {{ $isReading  := $cats | intersect (slice "Books") }}
