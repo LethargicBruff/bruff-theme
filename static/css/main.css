@@ -1299,30 +1299,24 @@ img, video { max-width: 100%; height: auto; display: block; }
   margin-bottom: 1rem;
 }
 
-div#bookshelves div.bookshelf {
-  display: flex;
-  flex-direction: column;
-}
-
-div#bookshelves div.bookshelf div.books {
+.bookshelf > div {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
 }
 
-div#bookshelves div.bookshelf div.book {
-  position: relative;
+.book {
   width: 80px;
   flex-shrink: 0;
 }
 
-div#bookshelves div.bookshelf div.book a {
+.book a {
   display: block;
   text-decoration: none;
 }
 
-div#bookshelves div.bookshelf div.book img {
-  width: 80px;
+.book img {
+  width: 80px !important;
   height: 120px;
   object-fit: cover;
   border-radius: 4px;
@@ -1331,11 +1325,11 @@ div#bookshelves div.bookshelf div.book img {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-div#bookshelves div.bookshelf div.book img:hover {
+.book img:hover {
   transform: translateY(-3px);
   box-shadow: 0 6px 16px rgba(0,0,0,0.2);
 }
 
-div#bookshelves div.bookshelf div.book p {
+.book > div {
   display: none;
 }
