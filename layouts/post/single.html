@@ -185,12 +185,11 @@
   </div>
 
   {{ if .Site.Params.include_conversation }}
-<div class="post-conversation">
-  <script type="text/javascript" src="https://micro.blog/conversation.js?url={{ .Permalink }}"></script>
-</div>
-{{ end }}
+  <div class="post-conversation">
+    <script type="text/javascript" src="https://micro.blog/conversation.js?url={{ .Permalink }}"></script>
   </div>
   {{ end }}
+
 </div>
 
 {{ end }}
