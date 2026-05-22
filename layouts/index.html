@@ -27,8 +27,7 @@
     </div>
     <div class="stream" id="post-stream">
       {{ range .Paginator.Pages }}
-  {{ if and .IsPage (not .Params.in_reply_to) (not (eq .Title "Replies")) (not (eq .Title "Photos")) (not (eq .Title "Archive")) (not (eq .Title "About")) (not (eq .Title "Tweets")) (not (eq .Title "Bookshelf")) (not (eq .Title "Stats")) }}
-    {{ partial "post-card.html" . }}
+{{ if and .IsPage (not .Params.in_reply_to) (not (eq .Title "Replies")) (not (eq .Title "Photos")) (not (eq .Title "Archive")) (not (eq .Title "About")) (not (eq .Title "Tweets")) (not (eq .Title "Bookshelf")) (not (eq .Title "Stats")) (not (eq .Title "Longer")) }}    {{ partial "post-card.html" . }}
   {{ end }}
 {{ end }}
     </div>
