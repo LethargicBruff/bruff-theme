@@ -1407,22 +1407,23 @@ a.post-tag:hover {
 
 .post-conversation {
   margin-top: 3rem;
-  padding-top: 1.5rem;
+  padding-top: 2rem;
   border-top: 1px solid var(--border);
-  max-width: 720px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
-.post-conversation .reply {
+.post-conversation #mb_conversation {
+  font-family: var(--sans);
+}
+
+.post-conversation .mb_reply {
+  display: flex;
+  gap: 0.85rem;
+  align-items: flex-start;
   padding: 1rem 0;
   border-bottom: 1px solid var(--border);
-  display: flex;
-  gap: 0.75rem;
-  align-items: flex-start;
 }
 
-.post-conversation .reply img {
+.post-conversation .mb_reply img {
   width: 36px;
   height: 36px;
   border-radius: 50%;
@@ -1430,46 +1431,78 @@ a.post-tag:hover {
   margin: 0;
 }
 
-.post-conversation .reply-content {
+.post-conversation .mb_reply_username {
+  font-weight: 500;
+  font-size: 0.85rem;
+  color: var(--ink);
+  margin-bottom: 0.2rem;
+}
+
+.post-conversation .mb_reply_text {
   font-size: 0.9rem;
   line-height: 1.55;
   color: var(--ink);
 }
 
-.post-conversation .reply-name {
-  font-weight: 500;
-  font-size: 0.82rem;
-  margin-bottom: 0.2rem;
-}
-
-.post-conversation .reply-date {
+.post-conversation .mb_reply_date {
   font-family: var(--mono);
   font-size: 0.65rem;
   color: var(--ink-faint);
-  margin-top: 0.25rem;
+  margin-top: 0.3rem;
+  display: block;
 }
 
-.post-conversation input,
-.post-conversation textarea {
+.post-conversation .mb_reply_date a {
+  color: var(--ink-faint);
+  text-decoration: none;
+}
+
+.post-conversation .mb_reply_date a:hover {
+  color: var(--accent);
+}
+
+/* Reply form */
+.post-conversation #mb_signin {
+  margin-top: 1.5rem;
+  font-size: 0.88rem;
+  color: var(--ink-muted);
+}
+
+.post-conversation #mb_signin a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.post-conversation #mb_signin a:hover {
+  opacity: 0.75;
+}
+
+.post-conversation #mb_form {
+  margin-top: 1rem;
+}
+
+.post-conversation #mb_form textarea {
   width: 100%;
   font-family: var(--sans);
   font-size: 0.9rem;
-  padding: 0.65rem 0.85rem;
+  padding: 0.75rem;
   border: 1px solid var(--border);
   border-radius: 6px;
   background: white;
   color: var(--ink);
-  margin-top: 0.5rem;
+  resize: vertical;
+  min-height: 80px;
   transition: border-color 0.15s;
 }
 
-.post-conversation input:focus,
-.post-conversation textarea:focus {
+.post-conversation #mb_form textarea:focus {
   outline: none;
   border-color: var(--accent);
 }
 
-.post-conversation button[type="submit"] {
+.post-conversation #mb_form input[type="submit"],
+.post-conversation #mb_form button {
   margin-top: 0.5rem;
   font-family: var(--mono);
   font-size: 0.72rem;
@@ -1484,6 +1517,7 @@ a.post-tag:hover {
   transition: opacity 0.15s;
 }
 
-.post-conversation button[type="submit"]:hover {
+.post-conversation #mb_form input[type="submit"]:hover,
+.post-conversation #mb_form button:hover {
   opacity: 0.8;
 }
