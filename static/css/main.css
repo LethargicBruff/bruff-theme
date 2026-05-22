@@ -285,19 +285,26 @@ img, video { max-width: 100%; height: auto; display: block; }
 .tag-work      { background: #F8FAFC; color: #475569; }
 
 /* Dot colours match their category pill */
-.micro-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ink-faint); margin-top: 0.47rem; flex-shrink: 0; }
-.dot-default  { background: var(--ink-faint); }
-.dot-music    { background: #7E22CE; }
-.dot-watching { background: #BE123C; }
-.dot-reading  { background: #15803D; }
-.dot-food     { background: #A16207; }
-.dot-games    { background: #4338CA; }
-.dot-sport    { background: #047857; }
-.dot-parenting { background: #A21CAF; }
-.dot-travel   { background: #0F766E; }
-.dot-work     { background: #475569; }
+.micro-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-top: 0.47rem;
+  flex-shrink: 0;
+  background: var(--ink-faint);
+}
 
-/* Dot alignment when tag pill is present */
+.micro-dot.dot-default   { background: var(--ink-faint); }
+.micro-dot.dot-music     { background: #7E22CE; }
+.micro-dot.dot-watching  { background: #BE123C; }
+.micro-dot.dot-reading   { background: #15803D; }
+.micro-dot.dot-food      { background: #A16207; }
+.micro-dot.dot-games     { background: #4338CA; }
+.micro-dot.dot-sport     { background: #047857; }
+.micro-dot.dot-parenting { background: #A21CAF; }
+.micro-dot.dot-travel    { background: #0F766E; }
+.micro-dot.dot-work      { background: #475569; }
+
 .post-micro.has-tag .micro-dot {
   margin-top: 1.85rem;
 }
