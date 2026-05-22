@@ -74,7 +74,7 @@
   <article class="post-long" data-type="{{ $dataType }}">
     <div class="post-meta-row">
       {{ if $tagLabel }}
-        <span class="post-tag {{ $tagClass }}">{{ $tagLabel }}</span>
+        <a href="/categories/{{ $tagLabel | lower | urlize }}/" class="post-tag {{ $tagClass }}">{{ $tagLabel }}</a>
       {{ else }}
         <span class="post-tag tag-longer">Longer</span>
       {{ end }}
@@ -96,8 +96,7 @@
   {{ else if $isPhoto }}
   <article class="post-photo" data-type="{{ $dataType }}">
     <div class="post-meta-row">
-      <span class="post-tag tag-photo">Photos</span>
-      <span class="post-date">{{ .Date.Format "2 Jan 2006" }}</span>
+      <a href="/categories/photos/" class="post-tag tag-photo">Photos</a>
     </div>
     {{ if $plainContent }}
     <p class="micro-text">{{ $plainContent | truncate 200 }}</p>
@@ -123,12 +122,12 @@
   </article>
 
   {{ else }}
-  <article class="post-micro" data-type="{{ $dataType }}">
-    <div class="micro-dot {{ $dotClass }}"></div>
+ <article class="post-micro" data-type="{{ $dataType }}">
+    <div class="micro-dot {{ $dotClass }}" style="margin-top:{{ if $tagLabel }}1.85rem{{ else }}0.47rem{{ end }};"></div>
     <div class="micro-body">
       {{ if $tagLabel }}
       <div class="post-meta-row" style="margin-bottom:0.35rem;">
-        <span class="post-tag {{ $tagClass }}">{{ $tagLabel }}</span>
+        <a href="/categories/{{ $tagLabel | lower | urlize }}/" class="post-tag {{ $tagClass }}">{{ $tagLabel }}</a>
       </div>
       {{ end }}
       <div class="micro-text">{{ $content }}</div>
