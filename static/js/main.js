@@ -202,15 +202,20 @@ function initLoadMore() {
       const stream   = qs('#post-stream');
 
       if (stream && newPosts.length) {
-        newPosts.forEach(post => {
-          post.style.opacity = '0';
-          stream.appendChild(post);
-          requestAnimationFrame(() => {
-            post.style.transition = 'opacity 0.3s ease';
-            post.style.opacity = '1';
-          });
-        });
-      }
+  const activeFilter = qs('.filter-btn.active')?.dataset.filter || 'all';
+  newPosts.forEach(post => {
+    post.style.opacity = '0';
+    if (activeFilter !== 'all') {
+      const type = (post.dataset.type || '').toLowerCase();
+      if (!type.includes(activeFilter)) post.style.display = 'none';
+    }
+    stream.appendChild(post);
+    requestAnimationFrame(() => {
+      post.style.transition = 'opacity 0.3s ease';
+      post.style.opacity = '1';
+    });
+  });
+}
 
       const nextBtn = doc.querySelector('.load-more-btn');
       if (nextBtn) {
