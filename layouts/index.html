@@ -16,15 +16,16 @@
 </div>
 <div class="layout">
   <div class="stream-column">
-    <div class="stream-filters">
-      <button class="filter-btn active" data-filter="all">All</button>
-      <button class="filter-btn" data-filter="longer">Longer</button>
-      <button class="filter-btn" data-filter="micro">Quick takes</button>
-      <button class="filter-btn" data-filter="photo">Photos</button>
-      <button class="filter-btn" data-filter="music">Music</button>
-      <button class="filter-btn" data-filter="watching">Watching</button>
-      <button class="filter-btn" data-filter="reading">Reading</button>
-    </div>
+   <div class="stream-filters">
+  <button class="filter-btn active" data-filter="all">All</button>
+  <button class="filter-btn" data-filter="longer">Longer</button>
+  <button class="filter-btn" data-filter="photo">Photos</button>
+  <button class="filter-btn" data-filter="music">Music</button>
+  <button class="filter-btn" data-filter="watching">Watching</button>
+  <button class="filter-btn" data-filter="reading">Reading</button>
+  <button class="filter-btn" data-filter="food">Food</button>
+  <button class="filter-btn" data-filter="games">Games</button>
+</div>
     <div class="stream" id="post-stream">
       {{ range .Paginator.Pages }}
 {{ if and .IsPage (not .Params.in_reply_to) (not (eq .Title "Replies")) (not (eq .Title "Photos")) (not (eq .Title "Archive")) (not (eq .Title "About")) (not (eq .Title "Tweets")) (not (eq .Title "Bookshelf")) (not (eq .Title "Stats")) (not (eq .Title "Longer")) }}    {{ partial "post-card.html" . }}
