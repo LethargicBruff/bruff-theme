@@ -1,0 +1,24 @@
+[Config]
+EnableViewToggle = false
+InitialView = 'grid'
+
+[[Bookshelves.Registered]]
+Key = 'currentlyreading'
+DisplayName = 'Currently Reading'
+
+[[Bookshelves.Registered]]
+Key = 'finishedreading'
+DisplayName = 'Finished Reading'
+
+[[Bookshelves.Registered]]
+Key = 'wanttoread'
+DisplayName = 'Want to Read'
+
+[Style]
+CoverWidth = 120
+
+[Style.Variables]
+ToggleFontSize = '0.8rem'
+ToggleAccentColor = '#C85A2E'
+ButtonBGColor = '#F7F4EF'
+ToggleHoverColor = '#1A1814'
