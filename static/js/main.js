@@ -111,40 +111,22 @@ async function loadWatchedSidebar() {
     const html = await res.text();
     const doc = new DOMParser().parseFromString(html, 'text/html');
 
-    // Grab all post links from the category page
-    const timeLinks = Array.from(doc.querySelectorAll('a[href*="/20"]')).filter(a => {
-      return a.href.match(/\/20\d\d\/\d\d\/\d\d\//);
-    });
+    const articles = Array.from(doc.querySelectorAll('article')).slice(0, 4);
 
-    // Get unique post URLs and their preceding text content
-    const seen = new Set();
-    const items = [];
-
-    timeLinks.forEach(link => {
-      const url = link.href;
-      if (seen.has(url)) return;
-      seen.add(url);
-
-      // Walk back up to find the post text
-      const parent = link.closest('div, p, article') || link.parentElement;
-      const text = parent ? parent.textContent.trim() : '';
-      const dateStr = link.textContent.trim();
-
-      if (text && text.length > 10) {
-        items.push({ url, text: text.replace(dateStr, '').trim(), dateStr });
-      }
-    });
-
-    const recent = items.slice(0, 4);
-
-    if (recent.length > 0) {
-      const watchedHtml = `<div class="watched-row">` + recent.map(item => {
-        const title = item.text.length > 80 ? item.text.slice(0, 80) + '…' : item.text;
+    if (articles.length > 0) {
+      const watchedHtml = `<div class="watched-row">` + articles.map(article => {
+        const link = article.querySelector('a.micro-time, a.read-more');
+        const url = link ? link.href : '#';
+        const dateEl = article.querySelector('.micro-time, .post-date');
+        const dateStr = dateEl ? dateEl.textContent.trim() : '';
+        const textEl = article.querySelector('.micro-text, .post-excerpt, h2');
+        let title = textEl ? textEl.textContent.trim() : '';
+        title = title.length > 80 ? title.slice(0, 80) + '…' : title;
         return `
-          <a href="${item.url}" class="watched-item">
+          <a href="${url}" class="watched-item">
             <div>
               <div class="watched-title">${title}</div>
-              <div class="watched-date">${item.dateStr}</div>
+              <div class="watched-date">${dateStr}</div>
             </div>
           </a>`;
       }).join('') + `</div>`;
@@ -152,7 +134,6 @@ async function loadWatchedSidebar() {
     } else {
       safeSetHtml('watched-feed', '<div style="padding:0.9rem 1.1rem;font-size:0.82rem;color:var(--ink-faint)">Nothing logged yet</div>');
     }
-
   } catch (e) {
     safeSetHtml('watched-feed', '<div style="padding:0.9rem 1.1rem;font-size:0.82rem;color:var(--ink-faint)">Could not load</div>');
     console.warn('Watched sidebar error:', e);
