@@ -1290,38 +1290,52 @@ img, video { max-width: 100%; height: auto; display: block; }
   margin-bottom: 3rem;
 }
 
-.bookshelf h2 {
+.bookshelf > p:first-of-type {
   font-family: var(--serif);
   font-size: 1.5rem;
   font-weight: 700;
   letter-spacing: -0.02em;
-  margin-bottom: 0.4rem;
   color: var(--ink);
+  margin-bottom: 1rem;
 }
 
-.bookshelf p {
-  font-size: 0.9rem;
-  color: var(--ink-muted);
-  margin-bottom: 1.25rem;
+div#bookshelves div.bookshelf {
+  display: flex;
+  flex-direction: column;
 }
 
-.bookshelf .book {
-  display: inline-block;
-  margin: 0 0.5rem 0.75rem 0;
-  vertical-align: top;
+div#bookshelves div.bookshelf div.books {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
 }
 
-.bookshelf .book img {
-  border-radius: 4px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-  transition: transform 0.2s ease;
+div#bookshelves div.bookshelf div.book {
+  position: relative;
+  width: 80px;
+  flex-shrink: 0;
+}
+
+div#bookshelves div.bookshelf div.book a {
   display: block;
-}
-
-.bookshelf .book img:hover {
-  transform: translateY(-3px);
-}
-
-.bookshelf .book a {
   text-decoration: none;
+}
+
+div#bookshelves div.bookshelf div.book img {
+  width: 80px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  display: block;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+div#bookshelves div.bookshelf div.book img:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+}
+
+div#bookshelves div.bookshelf div.book p {
+  display: none;
 }
