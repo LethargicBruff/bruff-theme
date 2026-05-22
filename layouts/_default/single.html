@@ -68,6 +68,12 @@
       {{ with .NextInSection }}<a href="{{ .Permalink }}">{{ .Title | truncate 30 }} →</a>{{ end }}
     </div>
   </footer>
+
+  {{ if templates.Exists "partials/microhook-post-end.html" }}
+  <div class="post-conversation">
+    {{ partial "microhook-post-end.html" . }}
+  </div>
+  {{ end }}
 </article>
 
 {{ else if $isPhoto }}
@@ -121,6 +127,12 @@
     {{ with .Prev }}<a href="{{ .Permalink }}">← Previous</a>{{ end }}
     {{ with .Next }}<a href="{{ .Permalink }}">Next →</a>{{ end }}
   </div>
+
+  {{ if templates.Exists "partials/microhook-post-end.html" }}
+  <div class="post-conversation">
+    {{ partial "microhook-post-end.html" . }}
+  </div>
+  {{ end }}
 </div>
 
 {{ else }}
@@ -171,6 +183,12 @@
       {{ end }}
     {{ end }}
   </div>
+
+  {{ if templates.Exists "partials/microhook-post-end.html" }}
+  <div class="post-conversation">
+    {{ partial "microhook-post-end.html" . }}
+  </div>
+  {{ end }}
 </div>
 
 {{ end }}
