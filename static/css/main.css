@@ -1370,3 +1370,11 @@ img, video { max-width: 100%; height: auto; display: block; }
 
 .archive-item a:hover { color: var(--accent); }
 .archive-item strong { font-weight: 500; }
+
+a.post-tag {
+  text-decoration: none;
+}
+
+a.post-tag:hover {
+  opacity: 0.75;
+}
