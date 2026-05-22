@@ -273,6 +273,13 @@ img, video { max-width: 100%; height: auto; display: block; }
 .tag-music   { background: var(--purple-subtle); color: var(--purple); }
 .tag-photo   { background: var(--blue-subtle);   color: var(--blue); }
 .tag-work    { background: var(--green-subtle);  color: var(--green); }
+.tag-watching  { background: var(--purple-subtle); color: var(--purple); }
+.tag-reading   { background: var(--green-subtle);  color: var(--green); }
+.tag-food      { background: #FEF3E2; color: #B45309; }
+.tag-games     { background: #E0F2FE; color: #0369A1; }
+.tag-sport     { background: #DCFCE7; color: #15803D; }
+.tag-parenting { background: #FCE7F3; color: #9D174D; }
+.tag-travel    { background: #F0FDF4; color: #166534; }
 
 /* ── LONGER POST CARD ────────────────────── */
 
