@@ -1,4 +1,6 @@
 {{ $content := .Content }}
+{{ if .Params.categories }}DEBUG-PARAMS: {{ .Params.categories }}{{ end }}
+{{ if .GetTerms "categories" }}DEBUG-TERMS: {{ range .GetTerms "categories" }}{{ .Title }},{{ end }}{{ end }}
 {{ $plainContent := .Plain }}
 {{ $wordCount := .WordCount }}
 {{ $hasTitle := .Title }}
