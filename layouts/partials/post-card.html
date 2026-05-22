@@ -7,24 +7,74 @@
 {{ $isPhoto := and (not $hasTitle) $hasImage (or (gt $imgCount 1) (lt $wordCount 15)) }}
 {{ $isLonger := $hasTitle }}
 {{ $isReply := findRE `^\s*@` $plainContent }}
-{{ $isWatching := or (findRE "(?i)^watched" $plainContent) (findRE "(?i)watching" ($plainContent | truncate 60)) }}
-{{ $isReading := or (findRE "(?i)^finished reading" $plainContent) (findRE "(?i)^reading" ($plainContent | truncate 60)) }}
-{{ $isMusic := .Params.categories | intersect (slice "Music" "music") }}
+
+{{ $cats := .Params.categories }}
+{{ $isMusic    := $cats | intersect (slice "Music") }}
+{{ $isWatching := $cats | intersect (slice "Movies and TV") }}
+{{ $isReading  := $cats | intersect (slice "Books") }}
+{{ $isFood     := $cats | intersect (slice "Food") }}
+{{ $isGames    := $cats | intersect (slice "Board games" "Video games") }}
+{{ $isSport    := $cats | intersect (slice "Sport") }}
+{{ $isParenting := $cats | intersect (slice "Parenting") }}
+{{ $isTravel   := $cats | intersect (slice "Travel") }}
+{{ $isPhotoCat := $cats | intersect (slice "Photos") }}
+{{ $isWork     := $cats | intersect (slice "Work stuff") }}
+
 {{ $tagLabel := "" }}
 {{ $tagClass := "" }}
 {{ if $isMusic }}
   {{ $tagLabel = "Music" }}
   {{ $tagClass = "tag-music" }}
-{{ else if eq .Section "longer" }}
-  {{ $tagLabel = "Longer" }}
-  {{ $tagClass = "tag-longer" }}
+{{ else if $isWatching }}
+  {{ $tagLabel = "Watching" }}
+  {{ $tagClass = "tag-watching" }}
+{{ else if $isReading }}
+  {{ $tagLabel = "Reading" }}
+  {{ $tagClass = "tag-reading" }}
+{{ else if $isFood }}
+  {{ $tagLabel = "Food" }}
+  {{ $tagClass = "tag-food" }}
+{{ else if $isGames }}
+  {{ $tagLabel = "Games" }}
+  {{ $tagClass = "tag-games" }}
+{{ else if $isSport }}
+  {{ $tagLabel = "Sport" }}
+  {{ $tagClass = "tag-sport" }}
+{{ else if $isParenting }}
+  {{ $tagLabel = "Parenting" }}
+  {{ $tagClass = "tag-parenting" }}
+{{ else if $isTravel }}
+  {{ $tagLabel = "Travel" }}
+  {{ $tagClass = "tag-travel" }}
+{{ else if $isWork }}
+  {{ $tagLabel = "Work" }}
+  {{ $tagClass = "tag-work" }}
 {{ end }}
+
+{{ $dotClass := "dot-thought" }}
+{{ $microLabel := "" }}
+{{ if $isWatching }}{{ $dotClass = "dot-watch" }}{{ $microLabel = "Watching" }}{{ end }}
+{{ if $isReading }}{{ $dotClass = "dot-read" }}{{ $microLabel = "Reading" }}{{ end }}
+
+{{ $dataType := "micro" }}
+{{ if $isLonger }}{{ $dataType = "longer" }}{{ end }}
+{{ if $isPhoto }}{{ $dataType = "photo" }}{{ end }}
+{{ if $isPhotoCat }}{{ $dataType = printf "%s photo" $dataType }}{{ end }}
+{{ if $isMusic }}{{ $dataType = printf "%s music" $dataType }}{{ end }}
+{{ if $isWatching }}{{ $dataType = printf "%s watching" $dataType }}{{ end }}
+{{ if $isReading }}{{ $dataType = printf "%s reading" $dataType }}{{ end }}
+{{ if $isFood }}{{ $dataType = printf "%s food" $dataType }}{{ end }}
+{{ if $isGames }}{{ $dataType = printf "%s games" $dataType }}{{ end }}
 
 {{ if not $isReply }}
   {{ if $isLonger }}
-  <article class="post-long" data-type="longer{{ if $isMusic }} music{{ end }}">
+  <article class="post-long" data-type="{{ $dataType }}">
     <div class="post-meta-row">
-      {{ if $tagLabel }}<span class="post-tag {{ $tagClass }}">{{ $tagLabel }}</span>{{ end }}
+      {{ if $tagLabel }}
+        <span class="post-tag {{ $tagClass }}">{{ $tagLabel }}</span>
+      {{ else }}
+        <span class="post-tag tag-longer">Longer</span>
+      {{ end }}
       <span class="post-date">{{ .Date.Format "2 Jan 2006" }}</span>
       {{ if gt $wordCount 200 }}<span class="post-readtime">· {{ div $wordCount 200 }} min read</span>{{ end }}
     </div>
@@ -41,7 +91,7 @@
   </article>
 
   {{ else if $isPhoto }}
-  <article class="post-photo" data-type="photo">
+  <article class="post-photo" data-type="{{ $dataType }}">
     <div class="post-meta-row">
       <span class="post-tag tag-photo">Photos</span>
       <span class="post-date">{{ .Date.Format "2 Jan 2006" }}</span>
@@ -70,17 +120,13 @@
   </article>
 
   {{ else }}
-  {{ $dotClass := "dot-thought" }}
-  {{ $microLabel := "" }}
-  {{ if $isWatching }}{{ $dotClass = "dot-watch" }}{{ $microLabel = "Watching" }}{{ end }}
-  {{ if $isReading }}{{ $dotClass = "dot-read" }}{{ $microLabel = "Reading" }}{{ end }}
-  <article class="post-micro" data-type="micro{{ if $isWatching }} watching{{ end }}{{ if $isReading }} reading{{ end }}">
+  <article class="post-micro" data-type="{{ $dataType }}">
     <div class="micro-dot {{ $dotClass }}"></div>
     <div class="micro-body">
       <div class="micro-text">{{ $content }}</div>
       <div class="micro-footer">
         <a href="{{ .Permalink }}" class="micro-time">{{ .Date.Format "2 Jan 2006 · 3:04pm" }}</a>
-        {{ if $microLabel }}<span class="micro-label">{{ $microLabel }}</span>{{ end }}
+        {{ if $tagLabel }}<span class="micro-label">{{ $tagLabel }}</span>{{ end }}
       </div>
     </div>
   </article>
