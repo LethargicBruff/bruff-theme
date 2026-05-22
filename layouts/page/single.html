@@ -1,0 +1,31 @@
+{{ define "main" }}
+{{ if eq .Title "Longer" }}
+<div class="list-page">
+  <div class="list-header">
+    <h1 class="list-title">Longer</h1>
+    <p class="list-description">Posts worth more than a passing thought.</p>
+  </div>
+  <div class="list-layout">
+    <div class="stream-column">
+      <div class="stream" id="post-stream">
+        {{ range where .Site.RegularPages "Title" "ne" "" }}
+          {{ if and (not .Params.in_reply_to) (not (eq .Title "Longer")) (not (eq .Title "Replies")) (not (eq .Title "Photos")) (not (eq .Title "Archive")) (not (eq .Title "About")) (not (eq .Title "Stats")) (not (eq .Title "Bookshelf")) (not (eq .Title "Tweets")) }}
+            {{ partial "post-card.html" . }}
+          {{ end }}
+        {{ end }}
+      </div>
+    </div>
+    {{ partial "sidebar.html" . }}
+  </div>
+</div>
+{{ else }}
+<div class="longer-post">
+  <header class="longer-header">
+    <h1>{{ .Title }}</h1>
+  </header>
+  <div class="post-body">
+    {{ .Content }}
+  </div>
+</div>
+{{ end }}
+{{ end }}
