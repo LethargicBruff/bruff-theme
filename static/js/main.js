@@ -100,64 +100,75 @@ async function loadYtFeed() {
   }
 }
 
-/* ── MICRO.BLOG SIDEBAR (Books + Watched) ── */
+/* ── BOOKS SIDEBAR ── */
 
-async function loadMicroblogSidebar() {
+async function loadBooksSidebar() {
   try {
-    const res  = await fetch(CONFIG.mbJsonFeed);
-    if (!res.ok) throw new Error('mb feed ' + res.status);
-    const data  = await res.json();
-    const items = data.items || [];
+    const res = await fetch('/bookshelf/');
+    if (!res.ok) throw new Error('bookshelf fetch failed');
+    const html = await res.text();
+    const doc = new DOMParser().parseFromString(html, 'text/html');
 
-    const bookPosts = items.filter(item => {
-      const text = (item.content_text || '').toLowerCase();
-      return (text.includes('finished reading') || text.startsWith('reading')) && item.content_html?.includes('<img');
-    }).slice(0, 6);
+    // First .bookshelf section is Currently Reading
+    const shelf = doc.querySelector('.bookshelf');
+    if (!shelf) throw new Error('no shelf found');
 
-    const watchedPosts = items.filter(item => {
+    const books = Array.from(shelf.querySelectorAll('.book')).slice(0, 6);
+
+    if (books.length > 0) {
+      const booksHtml = `<div class="books-row">` + books.map(book => {
+        const img = book.querySelector('img');
+        const link = book.querySelector('a');
+        const src = img ? img.src : '';
+        const url = link ? link.href : '/bookshelf/';
+        return src ? `<a href="${url}" class="book-item" target="_blank" rel="noopener"><img src="${src}" alt="" loading="lazy"></a>` : '';
+      }).filter(Boolean).join('') + `</div>`;
+      safeSetHtml('books-feed', booksHtml);
+    } else {
+      safeSetHtml('books-feed', '<div style="padding:0.9rem 1.1rem;font-size:0.82rem;color:var(--ink-faint)">Nothing on the shelf yet</div>');
+    }
+
+  } catch (e) {
+    safeSetHtml('books-feed', '<div style="padding:0.9rem 1.1rem;font-size:0.82rem;color:var(--ink-faint)">Could not load</div>');
+    console.warn('Books sidebar error:', e);
+  }
+}
+
+/* ── WATCHED SIDEBAR ── */
+
+async function loadWatchedSidebar() {
+  try {
+    const res = await fetch(CONFIG.corsProxy + encodeURIComponent(CONFIG.mbJsonFeed));
+    if (!res.ok) throw new Error('feed failed');
+    const data = await res.json();
+    const items = (data.items || []).filter(item => {
       const text = (item.content_text || '').toLowerCase();
       return text.startsWith('watched') || text.startsWith('watching');
     }).slice(0, 3);
 
-    if (bookPosts.length > 0) {
-      const booksHtml = `<div class="books-row">` + bookPosts.map(post => {
-        const imgMatch = post.content_html?.match(/<img[^>]+src="([^"]+)"/);
-        const src = imgMatch ? imgMatch[1] : '';
+    if (items.length > 0) {
+      const html = `<div class="watched-row">` + items.map(post => {
+        const text = post.content_text || '';
         const url = post.url || '#';
-        return src ? `<a href="${url}" class="book-item"><img src="${src}" alt="" loading="lazy"></a>` : '';
-      }).filter(Boolean).join('') + `</div>`;
-      safeSetHtml('books-feed', booksHtml);
-    } else {
-      safeSetHtml('books-feed', '<div style="padding:0.9rem 1.1rem;font-size:0.82rem;color:var(--ink-faint)">No books logged yet</div>');
-    }
-
-    if (watchedPosts.length > 0) {
-      const watchedHtml = `<div class="watched-row">` + watchedPosts.map(post => {
-        const text     = post.content_text || '';
-        const imgMatch = post.content_html?.match(/<img[^>]+src="([^"]+)"/);
-        const src      = imgMatch ? imgMatch[1] : '';
-        const url      = post.url || '#';
-        const date     = post.date_published ? timeAgo(post.date_published) : '';
-        const titleMatch = text.match(/(?:Watched|Watching)\s+["']?([^"'\n.]+)/i);
-        const title    = titleMatch ? titleMatch[1].trim() : text.slice(0, 60);
+        const date = post.date_published ? timeAgo(post.date_published) : '';
+        const titleMatch = text.match(/(?:Watched|Watching)\s+["']?([^"'\n.!]+)/i);
+        const title = titleMatch ? titleMatch[1].trim() : text.slice(0, 60);
         return `
           <a href="${url}" class="watched-item">
-            ${src ? `<div class="watched-thumb"><img src="${src}" alt="" loading="lazy"></div>` : ''}
             <div>
               <div class="watched-title">${title}</div>
               <div class="watched-date">${date}</div>
             </div>
           </a>`;
       }).join('') + `</div>`;
-      safeSetHtml('watched-feed', watchedHtml);
+      safeSetHtml('watched-feed', html);
     } else {
       safeSetHtml('watched-feed', '<div style="padding:0.9rem 1.1rem;font-size:0.82rem;color:var(--ink-faint)">Nothing logged yet</div>');
     }
 
   } catch (e) {
-    safeSetHtml('books-feed',   '<div style="padding:0.9rem 1.1rem;font-size:0.82rem;color:var(--ink-faint)">Could not load</div>');
     safeSetHtml('watched-feed', '<div style="padding:0.9rem 1.1rem;font-size:0.82rem;color:var(--ink-faint)">Could not load</div>');
-    console.warn('Micro.blog feed error:', e);
+    console.warn('Watched sidebar error:', e);
   }
 }
 
@@ -259,6 +270,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (qs('.sidebar')) {
     loadBttrFeed();
     loadYtFeed();
-    loadMicroblogSidebar();
+    loadBooksSidebar();
+    loadWatchedSidebar();
   }
 });
