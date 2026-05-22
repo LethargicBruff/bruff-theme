@@ -27,10 +27,10 @@
     </div>
     <div class="stream" id="post-stream">
       {{ range .Paginator.Pages }}
-        {{ if not .Date.IsZero }}
-          {{ partial "post-card.html" . }}
-        {{ end }}
-      {{ end }}
+  {{ if and .IsPage (not (eq .Title "Replies")) (not (eq .Title "Photos")) (not (eq .Title "Archive")) (not (eq .Title "About")) (not (eq .Title "Tweets")) (not (eq .Title "Bookshelf")) (not (eq .Title "Stats")) }}
+    {{ partial "post-card.html" . }}
+  {{ end }}
+{{ end }}
     </div>
     {{ if .Paginator.HasNext }}
     <div class="pagination">
