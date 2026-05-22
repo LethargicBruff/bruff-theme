@@ -1,5 +1,4 @@
 {{ define "main" }}
-
 <div class="hero">
   <div class="hero-avatar">
     <img src="https://avatars.micro.blog/avatars/2022/138652.jpg" alt="Nick">
@@ -15,7 +14,6 @@
     </div>
   </div>
 </div>
-
 <div class="layout">
   <div class="stream-column">
     <div class="stream-filters">
@@ -27,12 +25,13 @@
       <button class="filter-btn" data-filter="watching">Watching</button>
       <button class="filter-btn" data-filter="reading">Reading</button>
     </div>
-
     <div class="stream" id="post-stream">
-      {{ range .Paginator.Pages }}{{ if and (not (eq .RelPermalink "/replies/")) (not (eq .RelPermalink "/photos/")) (not (eq .RelPermalink "/archive/")) (not (eq .RelPermalink "/about/")) (not (eq .RelPermalink "/stats/")) (not (eq .RelPermalink "/books/")) (not (eq .RelPermalink "/tweets/")) (gt .WordCount 0) }}
-      {{ end }}{{ end }}
+      {{ range .Paginator.Pages }}
+        {{ if not .Date.IsZero }}
+          {{ partial "post-card.html" . }}
+        {{ end }}
+      {{ end }}
     </div>
-
     {{ if .Paginator.HasNext }}
     <div class="pagination">
       <button
@@ -44,8 +43,6 @@
     </div>
     {{ end }}
   </div>
-
   {{ partial "sidebar.html" . }}
 </div>
-
 {{ end }}
