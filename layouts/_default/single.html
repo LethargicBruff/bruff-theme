@@ -69,11 +69,11 @@
     </div>
   </footer>
 
-  {{ if templates.Exists "partials/microhook-post-end.html" }}
-  <div class="post-conversation">
-    {{ partial "microhook-post-end.html" . }}
-  </div>
-  {{ end }}
+  {{ if .Site.Params.include_conversation }}
+<div class="post-conversation">
+  <script type="text/javascript" src="https://micro.blog/conversation.js?url={{ .Permalink }}"></script>
+</div>
+{{ end }}
 </article>
 
 {{ else if $isPhoto }}
@@ -128,11 +128,11 @@
     {{ with .Next }}<a href="{{ .Permalink }}">Next →</a>{{ end }}
   </div>
 
-  {{ if templates.Exists "partials/microhook-post-end.html" }}
-  <div class="post-conversation">
-    {{ partial "microhook-post-end.html" . }}
-  </div>
-  {{ end }}
+  {{ if .Site.Params.include_conversation }}
+<div class="post-conversation">
+  <script type="text/javascript" src="https://micro.blog/conversation.js?url={{ .Permalink }}"></script>
+</div>
+{{ end }}
 </div>
 
 {{ else }}
@@ -184,11 +184,11 @@
     {{ end }}
   </div>
 
-  {{ if templates.Exists "partials/microhook-post-end.html" }}
-  <div class="post-conversation">
-    {{ partial "microhook-post-end.html" . }}
-  </div>
-  {{ end }}
+  {{ if .Site.Params.include_conversation }}
+<div class="post-conversation">
+  <script type="text/javascript" src="https://micro.blog/conversation.js?url={{ .Permalink }}"></script>
+</div>
+{{ end }}
 </div>
 
 {{ end }}
