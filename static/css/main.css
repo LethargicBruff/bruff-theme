@@ -1333,3 +1333,33 @@ img, video { max-width: 100%; height: auto; display: block; }
 .book > div {
   display: none;
 }
+
+/* ── ARCHIVE PAGE ────────────────────── */
+
+.archive-item {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 0.5rem;
+  padding: 0.6rem 0;
+  border-top: 1px solid var(--border);
+  align-items: baseline;
+}
+
+.archive-date {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--ink-faint);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.archive-item a {
+  font-size: 0.88rem;
+  color: var(--ink);
+  text-decoration: none;
+  line-height: 1.4;
+  transition: color 0.15s;
+}
+
+.archive-item a:hover { color: var(--accent); }
+.archive-item strong { font-weight: 500; }
