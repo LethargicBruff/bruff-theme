@@ -103,7 +103,7 @@
       <div class="photo-byline-date">{{ .Date.Format "2 January 2006" }}</div>
     </div>
 
-    {{ $textOnly := $content | replaceRE `<img[^>]+>` "" | replaceRE `<[^>]+>` "" | strings.TrimSpace }}
+    {{ $textOnly := $content | replaceRE `<img[^>]+>` "" | replaceRE `<[^>]+>` "" | trim " " }}
     {{ if $textOnly }}
     <p class="photo-caption">{{ $textOnly }}</p>
     {{ end }}
