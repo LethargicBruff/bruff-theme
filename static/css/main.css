@@ -269,17 +269,38 @@ img, video { max-width: 100%; height: auto; display: block; }
   font-weight: 400;
 }
 
-.tag-longer  { background: var(--accent-subtle); color: var(--accent); }
-.tag-music   { background: var(--purple-subtle); color: var(--purple); }
-.tag-photo   { background: var(--blue-subtle);   color: var(--blue); }
-.tag-work    { background: var(--green-subtle);  color: var(--green); }
-.tag-watching  { background: var(--purple-subtle); color: var(--purple); }
-.tag-reading   { background: var(--green-subtle);  color: var(--green); }
-.tag-food      { background: #FEF3E2; color: #B45309; }
-.tag-games     { background: #E0F2FE; color: #0369A1; }
-.tag-sport     { background: #DCFCE7; color: #15803D; }
-.tag-parenting { background: #FCE7F3; color: #9D174D; }
-.tag-travel    { background: #F0FDF4; color: #166534; }
+/* ── CATEGORY COLOURS ── */
+/* Each category has a pill colour and a matching dot colour */
+
+.tag-longer    { background: #FFF7ED; color: #C2410C; }
+.tag-music     { background: #F3E8FF; color: #7E22CE; }
+.tag-photo     { background: #EFF6FF; color: #1D4ED8; }
+.tag-watching  { background: #FFF1F2; color: #BE123C; }
+.tag-reading   { background: #F0FDF4; color: #15803D; }
+.tag-food      { background: #FEF9C3; color: #A16207; }
+.tag-games     { background: #EEF2FF; color: #4338CA; }
+.tag-sport     { background: #ECFDF5; color: #047857; }
+.tag-parenting { background: #FDF4FF; color: #A21CAF; }
+.tag-travel    { background: #F0FDFA; color: #0F766E; }
+.tag-work      { background: #F8FAFC; color: #475569; }
+
+/* Dot colours match their category pill */
+.micro-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ink-faint); margin-top: 0.47rem; flex-shrink: 0; }
+.dot-default  { background: var(--ink-faint); }
+.dot-music    { background: #7E22CE; }
+.dot-watching { background: #BE123C; }
+.dot-reading  { background: #15803D; }
+.dot-food     { background: #A16207; }
+.dot-games    { background: #4338CA; }
+.dot-sport    { background: #047857; }
+.dot-parenting { background: #A21CAF; }
+.dot-travel   { background: #0F766E; }
+.dot-work     { background: #475569; }
+
+/* Dot alignment when tag pill is present */
+.post-micro.has-tag .micro-dot {
+  margin-top: 1.85rem;
+}
 
 /* ── LONGER POST CARD ────────────────────── */
 
@@ -379,10 +400,6 @@ img, video { max-width: 100%; height: auto; display: block; }
   margin-top: 0.47rem;
   flex-shrink: 0;
 }
-
-.micro-dot.dot-watch   { background: var(--purple); }
-.micro-dot.dot-read    { background: var(--green); }
-.micro-dot.dot-thought { background: var(--accent); }
 
 .micro-body { display: flex; flex-direction: column; gap: 0.2rem; }
 
