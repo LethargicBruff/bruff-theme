@@ -1411,11 +1411,12 @@ a.post-tag:hover {
   border-top: 1px solid var(--border);
 }
 
-.post-conversation #mb_conversation {
+.microblog_conversation {
   font-family: var(--sans);
 }
 
-.post-conversation .mb_reply {
+/* Individual replies */
+.microblog_reply {
   display: flex;
   gap: 0.85rem;
   align-items: flex-start;
@@ -1423,7 +1424,7 @@ a.post-tag:hover {
   border-bottom: 1px solid var(--border);
 }
 
-.post-conversation .mb_reply img {
+.microblog_reply img {
   width: 36px;
   height: 36px;
   border-radius: 50%;
@@ -1431,20 +1432,20 @@ a.post-tag:hover {
   margin: 0;
 }
 
-.post-conversation .mb_reply_username {
+.microblog_reply_username {
   font-weight: 500;
   font-size: 0.85rem;
   color: var(--ink);
   margin-bottom: 0.2rem;
 }
 
-.post-conversation .mb_reply_text {
+.microblog_reply_text {
   font-size: 0.9rem;
   line-height: 1.55;
   color: var(--ink);
 }
 
-.post-conversation .mb_reply_date {
+.microblog_reply_date {
   font-family: var(--mono);
   font-size: 0.65rem;
   color: var(--ink-faint);
@@ -1452,37 +1453,34 @@ a.post-tag:hover {
   display: block;
 }
 
-.post-conversation .mb_reply_date a {
+.microblog_reply_date a {
   color: var(--ink-faint);
   text-decoration: none;
 }
 
-.post-conversation .mb_reply_date a:hover {
-  color: var(--accent);
-}
+.microblog_reply_date a:hover { color: var(--accent); }
 
-/* Reply form */
-.post-conversation #mb_signin {
-  margin-top: 1.5rem;
+/* Sign in text */
+.microblog_reply_signin {
   font-size: 0.88rem;
   color: var(--ink-muted);
+  margin-bottom: 0.75rem;
 }
 
-.post-conversation #mb_signin a {
+.microblog_reply_signin a {
   color: var(--accent);
   text-decoration: none;
   font-weight: 500;
 }
 
-.post-conversation #mb_signin a:hover {
-  opacity: 0.75;
+.microblog_reply_signin a:hover { opacity: 0.75; }
+
+/* Reply form */
+.microblog_reply_form {
+  margin-top: 1.5rem;
 }
 
-.post-conversation #mb_form {
-  margin-top: 1rem;
-}
-
-.post-conversation #mb_form textarea {
+.microblog_reply_textarea textarea {
   width: 100%;
   font-family: var(--sans);
   font-size: 0.9rem;
@@ -1494,15 +1492,15 @@ a.post-tag:hover {
   resize: vertical;
   min-height: 80px;
   transition: border-color 0.15s;
+  box-sizing: border-box;
 }
 
-.post-conversation #mb_form textarea:focus {
+.microblog_reply_textarea textarea:focus {
   outline: none;
   border-color: var(--accent);
 }
 
-.post-conversation #mb_form input[type="submit"],
-.post-conversation #mb_form button {
+.microblog_reply_button input[type="submit"] {
   margin-top: 0.5rem;
   font-family: var(--mono);
   font-size: 0.72rem;
@@ -1517,7 +1515,4 @@ a.post-tag:hover {
   transition: opacity 0.15s;
 }
 
-.post-conversation #mb_form input[type="submit"]:hover,
-.post-conversation #mb_form button:hover {
-  opacity: 0.8;
-}
+.microblog_reply_button input[type="submit"]:hover { opacity: 0.8; }
