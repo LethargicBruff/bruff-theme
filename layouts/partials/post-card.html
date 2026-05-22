@@ -3,16 +3,13 @@
 {{ $wordCount := .WordCount }}
 {{ $hasTitle := .Title }}
 {{ $hasImage := findRE "<img" $content }}
-
 {{ $imgCount := len (findRE "<img" $content) }}
 {{ $isPhoto := and (not $hasTitle) $hasImage (or (gt $imgCount 1) (lt $wordCount 15)) }}
 {{ $isLonger := $hasTitle }}
-
 {{ $isReply := findRE `^\s*@` $plainContent }}
 {{ $isWatching := or (findRE "(?i)^watched" $plainContent) (findRE "(?i)watching" ($plainContent | truncate 60)) }}
 {{ $isReading := or (findRE "(?i)^finished reading" $plainContent) (findRE "(?i)^reading" ($plainContent | truncate 60)) }}
 {{ $isMusic := .Params.tags | intersect (slice "music" "concert" "gig") }}
-
 {{ $tagLabel := "" }}
 {{ $tagClass := "" }}
 {{ if $isMusic }}
@@ -23,68 +20,69 @@
   {{ $tagClass = "tag-longer" }}
 {{ end }}
 
-{{ if $isLonger }}
-<article class="post-long" data-type="longer{{ if $isMusic }} music{{ end }}">
-  <div class="post-meta-row">
-    {{ if $tagLabel }}<span class="post-tag {{ $tagClass }}">{{ $tagLabel }}</span>{{ end }}
-    <span class="post-date">{{ .Date.Format "2 Jan 2006" }}</span>
-    {{ if gt $wordCount 200 }}<span class="post-readtime">· {{ div $wordCount 200 }} min read</span>{{ end }}
-  </div>
-  {{ with .Params.image }}
-  <div class="post-image">
-    <img src="{{ . }}" alt="{{ $.Title }}" loading="lazy">
-  </div>
-  {{ end }}
-  <h2><a href="{{ .Permalink }}">{{ .Title }}</a></h2>
-  {{ with .Summary }}
-  <p class="post-excerpt">{{ . | plainify | truncate 160 }}</p>
-  {{ end }}
-  <a href="{{ .Permalink }}" class="read-more">Continue reading →</a>
-</article>
-
-{{ else if $isPhoto }}
-<article class="post-photo" data-type="photo">
-  <div class="post-meta-row">
-    <span class="post-tag tag-photo">Photos</span>
-    <span class="post-date">{{ .Date.Format "2 Jan 2006" }}</span>
-  </div>
-  {{ if $plainContent }}
-  <p class="micro-text">{{ $plainContent | truncate 200 }}</p>
-  {{ end }}
-  <a href="{{ .Permalink }}" class="photo-card-images">
-    {{ $imgs := findRE `<img[^>]+>` $content }}
-    {{ $count := len $imgs }}
-    {{ if gt $count 1 }}
-    <div class="photo-card-grid photo-count-{{ if gt $count 4 }}many{{ else }}{{ $count }}{{ end }}">
-      {{ range first 5 $imgs }}
-        <div class="photo-cell">{{ . | safeHTML }}</div>
-      {{ end }}
+{{ if not $isReply }}
+  {{ if $isLonger }}
+  <article class="post-long" data-type="longer{{ if $isMusic }} music{{ end }}">
+    <div class="post-meta-row">
+      {{ if $tagLabel }}<span class="post-tag {{ $tagClass }}">{{ $tagLabel }}</span>{{ end }}
+      <span class="post-date">{{ .Date.Format "2 Jan 2006" }}</span>
+      {{ if gt $wordCount 200 }}<span class="post-readtime">· {{ div $wordCount 200 }} min read</span>{{ end }}
     </div>
-    {{ else if eq $count 1 }}
-    <div class="photo-card-single">
-      {{ index $imgs 0 | safeHTML }}
+    {{ with .Params.image }}
+    <div class="post-image">
+      <img src="{{ . }}" alt="{{ $.Title }}" loading="lazy">
     </div>
     {{ end }}
-  </a>
-  <div class="micro-footer">
-    <span class="micro-time">{{ .Date.Format "2 Jan 2006 · 3:04pm" }}</span>
-  </div>
-</article>
+    <h2><a href="{{ .Permalink }}">{{ .Title }}</a></h2>
+    {{ with .Summary }}
+    <p class="post-excerpt">{{ . | plainify | truncate 160 }}</p>
+    {{ end }}
+    <a href="{{ .Permalink }}" class="read-more">Continue reading →</a>
+  </article>
 
-{{ else }}
-{{ $dotClass := "dot-thought" }}
-{{ $microLabel := "" }}
-{{ if $isWatching }}{{ $dotClass = "dot-watch" }}{{ $microLabel = "Watching" }}{{ end }}
-{{ if $isReading }}{{ $dotClass = "dot-read" }}{{ $microLabel = "Reading" }}{{ end }}
-
-<article class="post-micro" data-type="micro{{ if $isWatching }} watching{{ end }}{{ if $isReading }} reading{{ end }}">
-  <div class="micro-dot {{ $dotClass }}"></div>
-  <div class="micro-body">
-    <div class="micro-text">{{ $content }}</div>
-    <div class="micro-footer">
-      <a href="{{ .Permalink }}" class="micro-time">{{ .Date.Format "2 Jan 2006 · 3:04pm" }}</a>
-      {{ if $microLabel }}<span class="micro-label">{{ $microLabel }}</span>{{ end }}
+  {{ else if $isPhoto }}
+  <article class="post-photo" data-type="photo">
+    <div class="post-meta-row">
+      <span class="post-tag tag-photo">Photos</span>
+      <span class="post-date">{{ .Date.Format "2 Jan 2006" }}</span>
     </div>
-  </div>
-</article>
+    {{ if $plainContent }}
+    <p class="micro-text">{{ $plainContent | truncate 200 }}</p>
+    {{ end }}
+    <a href="{{ .Permalink }}" class="photo-card-images">
+      {{ $imgs := findRE `<img[^>]+>` $content }}
+      {{ $count := len $imgs }}
+      {{ if gt $count 1 }}
+      <div class="photo-card-grid photo-count-{{ if gt $count 4 }}many{{ else }}{{ $count }}{{ end }}">
+        {{ range first 5 $imgs }}
+          <div class="photo-cell">{{ . | safeHTML }}</div>
+        {{ end }}
+      </div>
+      {{ else if eq $count 1 }}
+      <div class="photo-card-single">
+        {{ index $imgs 0 | safeHTML }}
+      </div>
+      {{ end }}
+    </a>
+    <div class="micro-footer">
+      <span class="micro-time">{{ .Date.Format "2 Jan 2006 · 3:04pm" }}</span>
+    </div>
+  </article>
+
+  {{ else }}
+  {{ $dotClass := "dot-thought" }}
+  {{ $microLabel := "" }}
+  {{ if $isWatching }}{{ $dotClass = "dot-watch" }}{{ $microLabel = "Watching" }}{{ end }}
+  {{ if $isReading }}{{ $dotClass = "dot-read" }}{{ $microLabel = "Reading" }}{{ end }}
+  <article class="post-micro" data-type="micro{{ if $isWatching }} watching{{ end }}{{ if $isReading }} reading{{ end }}">
+    <div class="micro-dot {{ $dotClass }}"></div>
+    <div class="micro-body">
+      <div class="micro-text">{{ $content }}</div>
+      <div class="micro-footer">
+        <a href="{{ .Permalink }}" class="micro-time">{{ .Date.Format "2 Jan 2006 · 3:04pm" }}</a>
+        {{ if $microLabel }}<span class="micro-label">{{ $microLabel }}</span>{{ end }}
+      </div>
+    </div>
+  </article>
+  {{ end }}
 {{ end }}
