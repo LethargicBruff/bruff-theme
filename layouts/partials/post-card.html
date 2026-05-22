@@ -4,7 +4,8 @@
 {{ $hasTitle := .Title }}
 {{ $hasImage := findRE "<img" $content }}
 
-{{ $isPhoto := and (not $hasTitle) $hasImage }}
+{{ $imgCount := len (findRE "<img" $content) }}
+{{ $isPhoto := and (not $hasTitle) $hasImage (or (gt $imgCount 1) (lt $wordCount 15)) }}
 {{ $isLonger := $hasTitle }}
 
 {{ $isWatching := or (findRE "(?i)^watched" $plainContent) (findRE "(?i)watching" ($plainContent | truncate 60)) }}
