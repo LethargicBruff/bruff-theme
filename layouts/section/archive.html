@@ -1,0 +1,23 @@
+{{ define "main" }}
+<div class="list-page">
+  <div class="list-header">
+    <h1 class="list-title">Archive</h1>
+    <p class="list-description">Everything, in order.</p>
+  </div>
+  <div class="layout">
+    <div class="stream-column">
+      {{ range .Site.RegularPages }}
+        {{ if and .IsPage (not .Params.in_reply_to) (not (eq .Title "Replies")) (not (eq .Title "Photos")) (not (eq .Title "Archive")) (not (eq .Title "About")) (not (eq .Title "Stats")) (not (eq .Title "Bookshelf")) (not (eq .Title "Tweets")) (not (eq .Title "Longer")) }}
+        <div class="archive-item">
+          <span class="archive-date">{{ .Date.Format "2 Jan 2006" }}</span>
+          <a href="{{ .Permalink }}">
+            {{ if .Title }}<strong>{{ .Title }}</strong>{{ else }}{{ .Plain | truncate 80 }}{{ end }}
+          </a>
+        </div>
+        {{ end }}
+      {{ end }}
+    </div>
+    {{ partial "sidebar.html" . }}
+  </div>
+</div>
+{{ end }}
