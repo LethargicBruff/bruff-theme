@@ -122,8 +122,8 @@
   </article>
 
   {{ else }}
- <article class="post-micro" data-type="{{ $dataType }}">
-    <div class="micro-dot {{ $dotClass }}" style="margin-top:{{ if $tagLabel }}1.85rem{{ else }}0.47rem{{ end }};"></div>
+ <article class="post-micro{{ if $tagLabel }} has-tag{{ end }}" data-type="{{ $dataType }}">
+    <div class="micro-dot {{ $dotClass }}"></div>
     <div class="micro-body">
       {{ if $tagLabel }}
       <div class="post-meta-row" style="margin-bottom:0.35rem;">
