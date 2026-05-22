@@ -1,7 +1,3 @@
-/* ════════════════════════════════════════
-   bruff.me — main.js
-   ════════════════════════════════════════ */
-
 'use strict';
 
 const CONFIG = {
@@ -10,6 +6,27 @@ const CONFIG = {
   ytFeedUrl:    'https://www.youtube.com/feeds/videos.xml?channel_id=UCAoGBE-IIXgXhnLH5VClteQ',
   mbJsonFeed:   '/feeds/json',
 };
+
+function qs(sel, ctx)  { return (ctx || document).querySelector(sel); }
+function qsa(sel, ctx) { return (ctx || document).querySelectorAll(sel); }
+
+function timeAgo(dateStr) {
+  const now  = new Date();
+  const then = new Date(dateStr);
+  const secs = Math.floor((now - then) / 1000);
+  if (secs < 60)     return 'just now';
+  if (secs < 3600)   return Math.floor(secs / 60) + 'm ago';
+  if (secs < 86400)  return Math.floor(secs / 3600) + 'h ago';
+  if (secs < 604800) return Math.floor(secs / 86400) + 'd ago';
+  return then.toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+function safeSetHtml(id, html) {
+  const el = document.getElementById(id);
+  if (el) el.innerHTML = html;
+}
+
+/* ── BTTR FEED ── */
 
 async function loadBttrFeed() {
   try {
@@ -37,6 +54,8 @@ async function loadBttrFeed() {
     console.warn('BTTR feed error:', e);
   }
 }
+
+/* ── YOUTUBE FEED ── */
 
 async function loadYtFeed() {
   try {
@@ -77,7 +96,6 @@ async function loadBooksSidebar() {
     const html = await res.text();
     const doc = new DOMParser().parseFromString(html, 'text/html');
 
-    // First .bookshelf section is Currently Reading
     const shelf = doc.querySelector('.bookshelf');
     if (!shelf) throw new Error('no shelf found');
 
@@ -85,17 +103,16 @@ async function loadBooksSidebar() {
 
     if (books.length > 0) {
       const booksHtml = `<div class="books-row">` + books.map(book => {
-        const img = book.querySelector('img');
+        const img  = book.querySelector('img');
         const link = book.querySelector('a');
-        const src = img ? img.src : '';
-        const url = link ? link.href : '/bookshelf/';
+        const src  = img ? img.src : '';
+        const url  = link ? link.href : '/bookshelf/';
         return src ? `<a href="${url}" class="book-item" target="_blank" rel="noopener"><img src="${src}" alt="" loading="lazy"></a>` : '';
       }).filter(Boolean).join('') + `</div>`;
       safeSetHtml('books-feed', booksHtml);
     } else {
       safeSetHtml('books-feed', '<div style="padding:0.9rem 1.1rem;font-size:0.82rem;color:var(--ink-faint)">Nothing on the shelf yet</div>');
     }
-
   } catch (e) {
     safeSetHtml('books-feed', '<div style="padding:0.9rem 1.1rem;font-size:0.82rem;color:var(--ink-faint)">Could not load</div>');
     console.warn('Books sidebar error:', e);
@@ -115,12 +132,12 @@ async function loadWatchedSidebar() {
 
     if (articles.length > 0) {
       const watchedHtml = `<div class="watched-row">` + articles.map(article => {
-        const link = article.querySelector('a.micro-time, a.read-more');
-        const url = link ? link.href : '#';
-        const dateEl = article.querySelector('.micro-time, .post-date');
+        const link    = article.querySelector('a.micro-time, a.read-more');
+        const url     = link ? link.href : '#';
+        const dateEl  = article.querySelector('.micro-time, .post-date');
         const dateStr = dateEl ? dateEl.textContent.trim() : '';
-        const textEl = article.querySelector('.micro-text, .post-excerpt, h2');
-        let title = textEl ? textEl.textContent.trim() : '';
+        const textEl  = article.querySelector('.micro-text, .post-excerpt, h2');
+        let title     = textEl ? textEl.textContent.trim() : '';
         title = title.length > 80 ? title.slice(0, 80) + '…' : title;
         return `
           <a href="${url}" class="watched-item">
@@ -139,6 +156,7 @@ async function loadWatchedSidebar() {
     console.warn('Watched sidebar error:', e);
   }
 }
+
 /* ── STREAM FILTERING ── */
 
 function initStreamFilters() {
@@ -150,10 +168,8 @@ function initStreamFilters() {
     btn.addEventListener('click', () => {
       filterBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-
       const filter   = btn.dataset.filter;
       const articles = qsa('article', stream);
-
       articles.forEach(article => {
         if (filter === 'all') { article.style.display = ''; return; }
         const type = (article.dataset.type || '').toLowerCase();
@@ -204,7 +220,6 @@ function initLoadMore() {
       } else {
         btn.closest('.pagination').remove();
       }
-
     } catch (e) {
       btn.classList.remove('loading');
       btn.textContent = 'Try again';
