@@ -434,7 +434,7 @@ img, video { max-width: 100%; height: auto; display: block; }
   width: 100%;
   max-height: 220px;
   object-fit: cover;
-  object-position: top;
+  object-position: center;
   margin-top: 0.6rem;
 }
 
