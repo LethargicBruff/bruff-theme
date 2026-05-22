@@ -138,30 +138,49 @@ async function loadBooksSidebar() {
 
 async function loadWatchedSidebar() {
   try {
-    const res = await fetch(CONFIG.corsProxy + encodeURIComponent(CONFIG.mbJsonFeed));
-    if (!res.ok) throw new Error('feed failed');
-    const data = await res.json();
-    const items = (data.items || []).filter(item => {
-      const text = (item.content_text || '').toLowerCase();
-      return text.startsWith('watched') || text.startsWith('watching');
-    }).slice(0, 3);
+    const res = await fetch('/categories/movies-and-tv/');
+    if (!res.ok) throw new Error('fetch failed');
+    const html = await res.text();
+    const doc = new DOMParser().parseFromString(html, 'text/html');
 
-    if (items.length > 0) {
-      const html = `<div class="watched-row">` + items.map(post => {
-        const text = post.content_text || '';
-        const url = post.url || '#';
-        const date = post.date_published ? timeAgo(post.date_published) : '';
-        const titleMatch = text.match(/(?:Watched|Watching)\s+["']?([^"'\n.!]+)/i);
-        const title = titleMatch ? titleMatch[1].trim() : text.slice(0, 60);
+    // Grab all post links from the category page
+    const timeLinks = Array.from(doc.querySelectorAll('a[href*="/20"]')).filter(a => {
+      return a.href.match(/\/20\d\d\/\d\d\/\d\d\//);
+    });
+
+    // Get unique post URLs and their preceding text content
+    const seen = new Set();
+    const items = [];
+
+    timeLinks.forEach(link => {
+      const url = link.href;
+      if (seen.has(url)) return;
+      seen.add(url);
+
+      // Walk back up to find the post text
+      const parent = link.closest('div, p, article') || link.parentElement;
+      const text = parent ? parent.textContent.trim() : '';
+      const dateStr = link.textContent.trim();
+
+      if (text && text.length > 10) {
+        items.push({ url, text: text.replace(dateStr, '').trim(), dateStr });
+      }
+    });
+
+    const recent = items.slice(0, 4);
+
+    if (recent.length > 0) {
+      const watchedHtml = `<div class="watched-row">` + recent.map(item => {
+        const title = item.text.length > 80 ? item.text.slice(0, 80) + '…' : item.text;
         return `
-          <a href="${url}" class="watched-item">
+          <a href="${item.url}" class="watched-item">
             <div>
               <div class="watched-title">${title}</div>
-              <div class="watched-date">${date}</div>
+              <div class="watched-date">${item.dateStr}</div>
             </div>
           </a>`;
       }).join('') + `</div>`;
-      safeSetHtml('watched-feed', html);
+      safeSetHtml('watched-feed', watchedHtml);
     } else {
       safeSetHtml('watched-feed', '<div style="padding:0.9rem 1.1rem;font-size:0.82rem;color:var(--ink-faint)">Nothing logged yet</div>');
     }
@@ -171,7 +190,6 @@ async function loadWatchedSidebar() {
     console.warn('Watched sidebar error:', e);
   }
 }
-
 /* ── STREAM FILTERING ── */
 
 function initStreamFilters() {
