@@ -1586,40 +1586,50 @@ a.post-tag:hover {
 }
 
 .photos-grid-container {
-  display: grid !important;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)) !important;
-  grid-auto-rows: 240px !important;
-  gap: 8px !important;
-  grid-column-gap: 8px !important;
-  grid-row-gap: 8px !important;
+  display: block !important;
+  columns: 4 !important;
+  column-gap: 8px !important;
+  grid-template-columns: unset !important;
+  grid-auto-rows: unset !important;
+  gap: unset !important;
 }
 
 .photos-grid-container a {
   display: block !important;
+  break-inside: avoid !important;
+  margin-bottom: 8px !important;
   overflow: hidden !important;
   border-radius: 6px !important;
-  background: var(--bg-subtle) !important;
+  grid-column: unset !important;
+  grid-row: unset !important;
 }
 
 .photos-grid-container a img {
   width: 100% !important;
-  height: 100% !important;
-  max-width: none !important;
-  object-fit: cover !important;
+  height: auto !important;
+  max-width: 100% !important;
   display: block !important;
   border-radius: 0 !important;
-  transition: transform 0.3s ease, opacity 0.2s ease !important;
+  transition: opacity 0.2s ease !important;
 }
 
 .photos-grid-container a:hover img {
-  transform: scale(1.04) !important;
-  opacity: 0.9 !important;
+  opacity: 0.85 !important;
+}
+
+@media (max-width: 900px) {
+  .photos-grid-container {
+    columns: 3 !important;
+  }
 }
 
 @media (max-width: 680px) {
   .photos-grid-container {
-    grid-template-columns: repeat(3, 1fr) !important;
-    grid-auto-rows: 120px !important;
-    gap: 4px !important;
+    columns: 2 !important;
+    column-gap: 4px !important;
+  }
+
+  .photos-grid-container a {
+    margin-bottom: 4px !important;
   }
 }
