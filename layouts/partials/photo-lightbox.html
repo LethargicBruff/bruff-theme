@@ -5,6 +5,22 @@
 <script src="https://cdn.jsdelivr.net/npm/glightbox@3.3.0/dist/js/glightbox.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
+
+  // Longer posts: move all image paragraphs after the first into a grid wrapper
+  var postBody = document.querySelector('.post-body');
+  if (postBody) {
+    var imgParas = postBody.querySelectorAll('p:has(img)');
+    if (imgParas.length > 1) {
+      var grid = document.createElement('div');
+      grid.className = 'post-body-grid';
+      imgParas[0].after(grid);
+      for (var i = 1; i < imgParas.length; i++) {
+        grid.appendChild(imgParas[i]);
+      }
+    }
+  }
+
+  // Wrap all grid images in lightbox anchors
   var gridImgs = document.querySelectorAll(
     '.photo-grid img, .micro-content-full.has-multi-images img, .post-body img'
   );
