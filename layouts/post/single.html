@@ -8,6 +8,11 @@
 {{ $isWatching := or (findRE "(?i)^watched" $plainContent) (findRE "(?i)watching" ($plainContent | truncate 60)) }}
 {{ $isReading := or (findRE "(?i)^finished reading" $plainContent) (findRE "(?i)^reading" ($plainContent | truncate 60)) }}
 
+{{/* Photo grid variables — computed once, used in micro post branch */}}
+{{- $contentImageCount := len (findRE "<img" $content) -}}
+{{- $paramPhotos := default (slice) .Params.photos -}}
+{{- $paramPhotoCount := len $paramPhotos -}}
+
 {{ if $isLonger }}
 <div class="breadcrumb-bar">
   <div class="breadcrumb">
@@ -88,7 +93,24 @@
     </div>
   </div>
 
-  <div class="micro-content micro-content-full">
+  {{/*
+    Photo grid for images stored in .Params.photos only.
+    Guard: only render when $content has no <img> tags, to prevent duplicates
+    on posts where Micro.blog embeds images in both places.
+  */}}
+  {{- if and (gt $paramPhotoCount 0) (eq $contentImageCount 0) -}}
+  <div class="photo-grid{{ if eq $paramPhotoCount 1 }} photo-grid--single{{ end }}">
+    {{- range $paramPhotos }}
+    <img src="{{ .img }}" alt="{{ .alt | default "" }}" loading="lazy">
+    {{- end }}
+  </div>
+  {{- end -}}
+
+  {{/*
+    has-multi-images class triggers CSS grid layout for multiple <img> tags
+    embedded directly inside $content (the other Micro.blog image storage path).
+  */}}
+  <div class="micro-content micro-content-full{{ if gt $contentImageCount 1 }} has-multi-images{{ end }}">
     {{ $content }}
   </div>
 
