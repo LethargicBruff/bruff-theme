@@ -112,16 +112,16 @@
       {{ $imgs := findRE `<img[^>]+>` $content }}
       {{ $count := len $imgs }}
       {{ if gt $count 1 }}
-      <div class="photo-card-grid photo-count-{{ if gt $count 4 }}many{{ else }}{{ $count }}{{ end }}">
-        {{ range first 5 $imgs }}
-          <div class="photo-cell">{{ . | safeHTML }}</div>
-        {{ end }}
-      </div>
-      {{ else if eq $count 1 }}
-      <div class="photo-card-single">
-        {{ index $imgs 0 | safeHTML }}
-      </div>
+    <div class="photo-card-grid-stream">
+      {{ range first 5 $imgs }}
+        <div class="photo-cell">{{ . | safeHTML }}</div>
       {{ end }}
+    </div>
+    {{ else if eq $count 1 }}
+    <div class="photo-card-single">
+      {{ index $imgs 0 | safeHTML }}
+    </div>
+    {{ end }}
     </a>
     <div class="micro-footer">
       <a href="{{ .Permalink }}" class="micro-time">{{ .Date.Format "2 Jan 2006 · 3:04pm" }}</a>
