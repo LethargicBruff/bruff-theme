@@ -1576,48 +1576,77 @@ a.post-tag:hover {
 /* ── PHOTOS PAGE ────────────────────── */
 
 .photos-page {
-  max-width: var(--max-width);
+  max-width: 1000px;
   margin: 0 auto;
   padding: 0 2rem 4rem;
 }
 
 .photos-page .list-header {
-  padding: 2.5rem 0 1.5rem;
-}
-
-.photos-grid {
-  /* wrapper around the plugin output */
+  padding: 2.5rem 0 2rem;
 }
 
 .photos-grid-container {
   display: grid !important;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) !important;
-  grid-gap: 4px !important;
-  grid-column-gap: 4px !important;
-  grid-row-gap: 4px !important;
+  grid-template-columns: repeat(6, 1fr) !important;
+  grid-auto-rows: 160px !important;
+  grid-gap: 6px !important;
+  grid-column-gap: 6px !important;
+  grid-row-gap: 6px !important;
 }
 
+/* Default: 2 columns, 1 row */
 .photos-grid-container a {
-  display: block;
-  overflow: hidden;
-  aspect-ratio: 1;
+  display: block !important;
+  overflow: hidden !important;
+  grid-column: span 2 !important;
+  grid-row: span 1 !important;
+  border-radius: 4px !important;
+}
+
+/* Every 7th image: large, 3 columns x 2 rows */
+.photos-grid-container a:nth-child(7n+1) {
+  grid-column: span 3 !important;
+  grid-row: span 2 !important;
+}
+
+/* Every 7th+3: wide, 4 columns x 1 row */
+.photos-grid-container a:nth-child(7n+4) {
+  grid-column: span 4 !important;
+  grid-row: span 1 !important;
+}
+
+/* Every 7th+6: tall, 2 columns x 2 rows */
+.photos-grid-container a:nth-child(7n+6) {
+  grid-column: span 2 !important;
+  grid-row: span 2 !important;
 }
 
 .photos-grid-container a img {
   width: 100% !important;
   height: 100% !important;
-  object-fit: cover;
-  display: block;
-  border-radius: 2px !important;
-  transition: opacity 0.2s ease;
+  max-width: none !important;
+  object-fit: cover !important;
+  display: block !important;
+  border-radius: 0 !important;
+  transition: opacity 0.2s ease, transform 0.3s ease !important;
 }
 
 .photos-grid-container a:hover img {
-  opacity: 0.85;
+  opacity: 0.9 !important;
+  transform: scale(1.02) !important;
 }
 
 @media (max-width: 680px) {
   .photos-grid-container {
     grid-template-columns: repeat(3, 1fr) !important;
+    grid-auto-rows: 120px !important;
+  }
+
+  .photos-grid-container a,
+  .photos-grid-container a:nth-child(7n+1),
+  .photos-grid-container a:nth-child(7n+4),
+  .photos-grid-container a:nth-child(7n+6) {
+    grid-column: span 1 !important;
+    grid-row: span 1 !important;
   }
 }
