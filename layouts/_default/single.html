@@ -105,9 +105,13 @@
   </div>
   {{ end }}
 
-  {{ if $textContent }}
-<div class="photo-only-caption">{{ $textContent | safeHTML }}</div>
-{{ end }}
+  <div class="photo-only-caption">
+  DEBUG content: [{{ $content }}]
+  DEBUG plain: [{{ $plainContent }}]
+  DEBUG summary: [{{ .Summary }}]
+  DEBUG description: [{{ .Description }}]
+  DEBUG params: [{{ .Params }}]
+</div>
 
   <div class="photo-only-nav">
     <div class="photo-byline-bar">
