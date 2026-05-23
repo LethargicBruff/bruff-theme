@@ -210,11 +210,13 @@ function initLoadMore() {
       if (!type.includes(activeFilter)) post.style.display = 'none';
     }
     // Strip inline dimensions so CSS max-height applies correctly
-    post.querySelectorAll('img, video').forEach(el => {
-      el.removeAttribute('width');
-      el.removeAttribute('height');
-      el.style.removeProperty('height');
-    });
+  post.querySelectorAll('img, video').forEach(el => {
+  el.removeAttribute('width');
+  el.removeAttribute('height');
+  el.style.removeProperty('width');
+  el.style.removeProperty('height');
+  el.style.removeProperty('max-width');
+});
     stream.appendChild(post);
     requestAnimationFrame(() => {
       post.style.transition = 'opacity 0.3s ease';
