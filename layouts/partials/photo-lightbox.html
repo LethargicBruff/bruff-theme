@@ -1,23 +1,12 @@
-{{/*
-  Photo lightbox — include this once, just before </body> in baseof.html:
-  {{ partial "photo-lightbox.html" . }}
+{{ $hasImages := gt (len (findRE "<img" .Content)) 0 }}
 
-  Only loads GLightbox assets when the page actually has a photo grid.
-  Works for both .Params.photos grids and $content image grids.
-*/}}
-
-{{ $hasGrid := or
-  (and .Params.photos (not (findRE "<img" .Content)))
-  (gt (len (findRE "<img" .Content)) 1)
-}}
-
-{{ if $hasGrid }}
+{{ if or $hasImages .Params.photos }}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox@3.3.0/dist/css/glightbox.min.css">
 <script src="https://cdn.jsdelivr.net/npm/glightbox@3.3.0/dist/js/glightbox.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
   var gridImgs = document.querySelectorAll(
-    '.photo-grid img, .micro-content-full.has-multi-images img'
+    '.photo-grid img, .micro-content-full.has-multi-images img, .post-body img'
   );
 
   if (!gridImgs.length) return;
