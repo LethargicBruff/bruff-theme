@@ -1643,3 +1643,85 @@ a.post-tag:hover {
   max-height: none !important;
   object-fit: unset !important;
 }
+
+/* ── PHOTO-ONLY POST PAGE ────────────────────── */
+
+.photo-only-page {
+  max-width: 1040px;
+  margin: 2rem auto 4rem;
+  padding: 0 2rem;
+}
+
+.photo-only-hero {
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.photo-only-hero img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 6px;
+}
+
+.photo-only-caption {
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--ink-muted);
+  line-height: 1.6;
+  margin: 1rem 0;
+}
+
+.photo-only-nav {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+/* ── POST IMAGE GRIDS ────────────────────── */
+
+.post-image-grid {
+  display: grid;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.post-image-grid.photo-grid-2 {
+  grid-template-columns: 1fr 1fr;
+}
+
+.post-image-grid.photo-grid-3 {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.post-image-grid.photo-grid-4 {
+  grid-template-columns: 1fr 1fr;
+}
+
+.post-image-grid.photo-grid-many {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.post-image-cell {
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.post-image-cell img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ── MICRO POST LEAD IMAGE ────────────────────── */
+
+.micro-post-lead-image {
+  margin: 0.75rem 0 4px;
+}
+
+.micro-post-lead-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+}
