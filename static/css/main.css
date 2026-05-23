@@ -1581,32 +1581,43 @@ a.post-tag:hover {
   padding: 0 2rem 4rem;
 }
 
+.photos-page .list-header {
+  padding: 2.5rem 0 1.5rem;
+}
+
 .photos-grid {
-  columns: 4 200px;
-  column-gap: 4px;
+  /* wrapper around the plugin output */
 }
 
-.photos-grid a {
+.photos-grid-container {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) !important;
+  grid-gap: 4px !important;
+  grid-column-gap: 4px !important;
+  grid-row-gap: 4px !important;
+}
+
+.photos-grid-container a {
   display: block;
-  break-inside: avoid;
-  margin-bottom: 4px;
   overflow: hidden;
+  aspect-ratio: 1;
 }
 
-.photos-grid a img {
-  width: 100%;
-  height: auto;
+.photos-grid-container a img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover;
   display: block;
+  border-radius: 2px !important;
   transition: opacity 0.2s ease;
-  border-radius: 2px;
 }
 
-.photos-grid a:hover img {
+.photos-grid-container a:hover img {
   opacity: 0.85;
 }
 
 @media (max-width: 680px) {
-  .photos-grid {
-    columns: 3 120px;
+  .photos-grid-container {
+    grid-template-columns: repeat(3, 1fr) !important;
   }
 }
