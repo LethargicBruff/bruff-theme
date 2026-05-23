@@ -1425,6 +1425,17 @@ a.post-tag:hover {
   flex-direction: column;
 }
 
+.microblog_conversation::after {
+  content: 'Conversation';
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--ink);
+  order: -2;
+  margin-bottom: 1.25rem;
+  display: block;
+}
+
 /* Move form to top */
 .microblog_reply_form {
   order: -1;
