@@ -261,3 +261,13 @@ document.addEventListener('DOMContentLoaded', () => {
     loadWatchedSidebar();
   }
 });
+
+/* ── PHOTOS PAGE FIX ── */
+if (document.querySelector('.photos-grid-container')) {
+  document.querySelectorAll('.photos-grid-container img').forEach(img => {
+    img.removeAttribute('width');
+    img.removeAttribute('height');
+    img.style.width = '100%';
+    img.style.height = 'auto';
+  });
+}
