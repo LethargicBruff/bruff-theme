@@ -109,8 +109,12 @@
   {{ end }}
   {{ end }}
 
+  {{ $contentText := $content | replaceRE `<img[^>]+>` "" | replaceRE `<[^>]+>` "" | trim " " }}
   <div class="micro-content micro-content-full">
     {{ $content }}
+    {{ if and $plainContent (not $contentText) }}
+    <p>{{ $plainContent }}</p>
+    {{ end }}
   </div>
 
   <div class="micro-actions">
