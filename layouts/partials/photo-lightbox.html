@@ -1,33 +1,15 @@
-{{ $hasImages := gt (len (findRE "<img" .Content)) 0 }}
-
-{{ if or $hasImages .Params.photos }}
+{{ if .IsPage }}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox@3.3.0/dist/css/glightbox.min.css">
 <script src="https://cdn.jsdelivr.net/npm/glightbox@3.3.0/dist/js/glightbox.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
+  var imgs = Array.from(document.querySelectorAll('main img')).filter(function (img) {
+    return !img.src.includes('avatars.micro.blog');
+  });
 
-  // Longer posts: move all image paragraphs after the first into a grid wrapper
-  var postBody = document.querySelector('.post-body');
-  if (postBody) {
-    var imgParas = postBody.querySelectorAll('p:has(img)');
-    if (imgParas.length > 1) {
-      var grid = document.createElement('div');
-      grid.className = 'post-body-grid';
-      imgParas[0].after(grid);
-      for (var i = 1; i < imgParas.length; i++) {
-        grid.appendChild(imgParas[i]);
-      }
-    }
-  }
+  if (!imgs.length) return;
 
-  // Wrap all grid images in lightbox anchors
-  var gridImgs = document.querySelectorAll(
-    '.photo-grid img, .micro-content-full.has-multi-images img, .post-body img'
-  );
-
-  if (!gridImgs.length) return;
-
-  gridImgs.forEach(function (img) {
+  imgs.forEach(function (img) {
     var a = document.createElement('a');
     a.href = img.src;
     a.className = 'glightbox';
