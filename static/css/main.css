@@ -1763,3 +1763,11 @@ a.post-tag:hover {
 .photo-card-grid-stream .photo-cell:first-child {
   grid-row: span 2;
 }
+
+.micro-content-full img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+  margin-bottom: 4px;
+}
