@@ -460,13 +460,19 @@ img, video { max-width: 100%; height: auto; display: block; }
   padding: 1.25rem 0;
 }
 
-.photo-card-single img {
+.photo-card-single {
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
   border-radius: 8px;
+  margin-top: 0.75rem;
+}
+
+.photo-card-single img {
   width: 100%;
-  max-height: 220px;
+  height: 100%;
   object-fit: cover;
   object-position: center;
-  margin-top: 0.6rem;
+  display: block;
 }
 
 .photo-card-grid {
