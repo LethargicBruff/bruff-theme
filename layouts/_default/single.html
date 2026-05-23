@@ -88,6 +88,21 @@
     </div>
   </div>
 
+  {{ $paramPhotos := .Params.photos }}
+{{ if $paramPhotos }}
+  {{ if eq (len $paramPhotos) 1 }}
+  <div class="micro-post-lead-image">
+    <img src="{{ index $paramPhotos 0 }}" alt="" style="width:100%;height:auto;border-radius:8px;">
+  </div>
+  {{ else }}
+  <div class="micro-inline-gallery">
+    {{ range $paramPhotos }}
+    <img src="{{ . }}" alt="">
+    {{ end }}
+  </div>
+  {{ end }}
+{{ end }}
+  
   <div class="micro-content micro-content-full">
     {{ $content }}
   </div>
