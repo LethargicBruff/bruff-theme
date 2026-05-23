@@ -425,8 +425,8 @@ img, video { max-width: 100%; height: auto; display: block; }
   margin-top: 0.5rem;
   border-radius: 8px;
   width: 100%;
-  max-height: 220px;
-  object-fit: cover;
+  height: auto;
+  object-fit: unset;
 }
 
 .micro-footer {
