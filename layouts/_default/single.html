@@ -106,8 +106,8 @@
   {{ end }}
 
   {{ if $textContent }}
-  <p class="photo-only-caption">{{ $textContent | plainify }}</p>
-  {{ end }}
+<div class="photo-only-caption">{{ $textContent | safeHTML }}</div>
+{{ end }}
 
   <div class="photo-only-nav">
     <div class="photo-byline-bar">
