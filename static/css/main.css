@@ -1771,3 +1771,85 @@ a.post-tag:hover {
   border-radius: 8px;
   margin-bottom: 4px;
 }
+
+/* =====================================================
+   Photo grid — add to your theme CSS
+   ===================================================== */
+
+/* --- .Params.photos path: images rendered by template --- */
+
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3px;
+  margin-bottom: 1.25rem;
+}
+
+.photo-grid img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+/* Single photo: full width, natural height */
+.photo-grid.photo-grid--single {
+  display: block;
+}
+
+.photo-grid.photo-grid--single img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: auto;
+  object-fit: initial;
+}
+
+/* --- $content path: multiple <img> tags embedded in content --- */
+
+/*
+  When $content has 2+ images, Hugo wraps them in <p> tags.
+  Two layouts are possible depending on how Micro.blog stored them:
+
+  A) All images in one <p>:  <p><img><img><img></p>
+     — display: contents strips the <p>, imgs become direct grid children
+
+  B) Each image in its own <p>:  <p><img></p><p><img></p><p><img></p>
+     — same fix: display: contents on each image-only <p>
+
+  Text paragraphs span all three columns so they read full-width.
+*/
+
+.micro-content-full.has-multi-images {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3px;
+  margin-bottom: 1.25rem;
+}
+
+/* Text paragraphs (no images): span full width */
+.micro-content-full.has-multi-images p:not(:has(img)) {
+  grid-column: 1 / -1;
+  margin: 0 0 0.75rem;
+}
+
+/* Image-only paragraphs: strip the wrapper so <img> tags
+   become direct grid children and fill columns naturally */
+.micro-content-full.has-multi-images p:has(img) {
+  display: contents;
+}
+
+.micro-content-full.has-multi-images img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+/* --- Responsive: 2 columns on narrow screens --- */
+
+@media (max-width: 480px) {
+  .photo-grid,
+  .micro-content-full.has-multi-images {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
