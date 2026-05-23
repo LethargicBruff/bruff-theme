@@ -4,27 +4,7 @@
 {{ $plainContent := .Plain }}
 {{ $wordCount := .WordCount }}
 {{ $hasTitle := .Title }}
-{{ $imgs := findRE `<img[^>]+>` $content }}
-{{ $imgCount := len $imgs }}
-{{ $firstImg := index $imgs 0 }}
-{{ $remainingImgs := after 1 $imgs }}
-{{ $hasImage := gt $imgCount 0 }}
-{{ $paramPhotos := .Params.photos }}
-{{ if and (not $hasImage) $paramPhotos }}
-  {{ $hasImage = true }}
-  {{ $firstImg = printf "<img src=\"%s\" alt=\"\">" (index $paramPhotos 0) }}
-  {{ $imgCount = len $paramPhotos }}
-  {{ if gt $imgCount 1 }}
-    {{ $remainingImgs = slice }}
-    {{ range after 1 $paramPhotos }}
-      {{ $remainingImgs = $remainingImgs | append (printf "<img src=\"%s\" alt=\"\">" .) }}
-    {{ end }}
-  {{ end }}
-{{ end }}
-{{ $textContent := $content | replaceRE `<img[^>]+/?>` "" | replaceRE `(?s)<figure[^>]*>.*?</figure>` "" | trim " " }}
-
 {{ $isLonger := $hasTitle }}
-
 {{ $isWatching := or (findRE "(?i)^watched" $plainContent) (findRE "(?i)watching" ($plainContent | truncate 60)) }}
 {{ $isReading := or (findRE "(?i)^finished reading" $plainContent) (findRE "(?i)^reading" ($plainContent | truncate 60)) }}
 
@@ -130,7 +110,7 @@
   {{ end }}
 
   <div class="micro-content micro-content-full">
-    {{ $textContent | safeHTML }}
+    {{ $content }}
   </div>
 
   <div class="micro-actions">
