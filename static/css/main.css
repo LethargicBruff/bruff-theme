@@ -1853,3 +1853,28 @@ a.post-tag:hover {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+/* =====================================================
+   Add these rules to photo-grid.css (or your main CSS)
+   ===================================================== */
+
+/* The JS wraps each grid <img> in an <a class="glightbox">.
+   These rules keep the grid layout intact after that change. */
+
+.photo-grid a.glightbox,
+.micro-content-full.has-multi-images a.glightbox {
+  display: block;
+  line-height: 0;     /* kills the gap that inline elements leave below img */
+  cursor: zoom-in;
+}
+
+/* Subtle hover state so it's clear the images are tappable */
+.photo-grid a.glightbox img,
+.micro-content-full.has-multi-images a.glightbox img {
+  transition: opacity 0.15s ease;
+}
+
+.photo-grid a.glightbox:hover img,
+.micro-content-full.has-multi-images a.glightbox:hover img {
+  opacity: 0.88;
+}
