@@ -1,0 +1,11 @@
+{{ define "main" }}
+<div class="photos-page">
+  <div class="list-header">
+    <h1 class="list-title">Photos</h1>
+    <p class="list-description">{{ .Site.RegularPages | len }} posts with photos, going back to 2011.</p>
+  </div>
+  <div class="photos-grid">
+    {{ .Content }}
+  </div>
+</div>
+{{ end }}
