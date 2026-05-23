@@ -3,6 +3,27 @@
 <script src="https://cdn.jsdelivr.net/npm/glightbox@3.3.0/dist/js/glightbox.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
+
+  // Longer posts: first image stays as hero, rest move into a grid
+  var postBody = document.querySelector('.post-body');
+  if (postBody) {
+    var allImgs = Array.from(postBody.querySelectorAll('img'));
+    if (allImgs.length > 1) {
+      var grid = document.createElement('div');
+      grid.className = 'post-body-grid';
+      var firstPara = allImgs[0].closest('p');
+      if (firstPara) {
+        firstPara.after(grid);
+      } else {
+        allImgs[0].after(grid);
+      }
+      for (var i = 1; i < allImgs.length; i++) {
+        grid.appendChild(allImgs[i]);
+      }
+    }
+  }
+
+  // Lightbox: wrap every image in main, excluding the avatar
   var imgs = Array.from(document.querySelectorAll('main img')).filter(function (img) {
     return !img.src.includes('avatars.micro.blog');
   });
