@@ -9,7 +9,7 @@
 {{ $firstImg := index $imgs 0 }}
 {{ $remainingImgs := after 1 $imgs }}
 {{ $hasImage := gt $imgCount 0 }}
-{{ $textContent := $content | replaceRE `<img[^>]+/?>` "" | replaceRE `(?s)<figure[^>]*>.*?</figure>` "" | replaceRE `https?://[^\s"<]+\.(mov|mp4|m4v)` `<video src="$0" controls playsinline style="width:100%;border-radius:8px;margin-top:0.75rem;"></video>` | trim " " }}
+{{ $textContent := $content | replaceRE `<img[^>]+/?>` "" | replaceRE `(?s)<figure[^>]*>.*?</figure>` "" | trim " " }}
 
 {{ $isPhoto := and (not $hasTitle) $hasImage (lt $wordCount 10) }}
 {{ $isLonger := $hasTitle }}
