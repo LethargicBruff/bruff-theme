@@ -1725,3 +1725,31 @@ a.post-tag:hover {
   display: block;
   border-radius: 8px;
 }
+
+/* ── STREAM PHOTO CARD GRID ────────────────────── */
+
+.photo-card-grid-stream {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 3px;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-top: 0.75rem;
+  aspect-ratio: 16 / 9;
+}
+
+.photo-card-grid-stream .photo-cell {
+  overflow: hidden;
+  background: var(--bg-subtle);
+}
+
+.photo-card-grid-stream .photo-cell img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.photo-card-grid-stream .photo-cell:first-child {
+  grid-row: span 2;
+}
