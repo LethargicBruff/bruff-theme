@@ -1572,3 +1572,41 @@ a.post-tag:hover {
 }
 
 .microblog_time a:hover { color: var(--accent); }
+
+/* ── PHOTOS PAGE ────────────────────── */
+
+.photos-page {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 2rem 4rem;
+}
+
+.photos-grid {
+  columns: 4 200px;
+  column-gap: 4px;
+}
+
+.photos-grid a {
+  display: block;
+  break-inside: avoid;
+  margin-bottom: 4px;
+  overflow: hidden;
+}
+
+.photos-grid a img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: opacity 0.2s ease;
+  border-radius: 2px;
+}
+
+.photos-grid a:hover img {
+  opacity: 0.85;
+}
+
+@media (max-width: 680px) {
+  .photos-grid {
+    columns: 3 120px;
+  }
+}
