@@ -209,6 +209,12 @@ function initLoadMore() {
       const type = (post.dataset.type || '').toLowerCase();
       if (!type.includes(activeFilter)) post.style.display = 'none';
     }
+    // Strip inline dimensions so CSS max-height applies correctly
+    post.querySelectorAll('img, video').forEach(el => {
+      el.removeAttribute('width');
+      el.removeAttribute('height');
+      el.style.removeProperty('height');
+    });
     stream.appendChild(post);
     requestAnimationFrame(() => {
       post.style.transition = 'opacity 0.3s ease';
