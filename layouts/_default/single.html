@@ -89,20 +89,6 @@
     </div>
   </div>
 
-  {{ if $paramPhotos }}
-    {{ if eq (len $paramPhotos) 1 }}
-    <div class="micro-post-lead-image">
-      <img src="{{ index $paramPhotos 0 }}" alt="">
-    </div>
-    {{ else }}
-    <div class="micro-inline-gallery">
-      {{ range $paramPhotos }}
-      <img src="{{ . }}" alt="">
-      {{ end }}
-    </div>
-    {{ end }}
-  {{ end }}
-
   <div class="micro-content micro-content-full">
     {{ $content }}
   </div>
