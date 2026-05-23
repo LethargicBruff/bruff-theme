@@ -23,7 +23,6 @@
 {{ end }}
 {{ $textContent := $content | replaceRE `<img[^>]+/?>` "" | replaceRE `(?s)<figure[^>]*>.*?</figure>` "" | trim " " }}
 
-{{ $isPhoto := and (not $hasTitle) $hasImage (lt $wordCount 10) }}
 {{ $isLonger := $hasTitle }}
 
 {{ $isWatching := or (findRE "(?i)^watched" $plainContent) (findRE "(?i)watching" ($plainContent | truncate 60)) }}
@@ -98,52 +97,6 @@
   </div>
   {{ end }}
 </article>
-
-{{ else if $isPhoto }}
-<!-- ══ PHOTO-ONLY POST ══ -->
-<div class="photo-only-page">
-
-  {{ if $firstImg }}
-  <div class="photo-only-hero">
-    {{ $firstImg | safeHTML }}
-  </div>
-  {{ end }}
-
-  {{ if gt $imgCount 1 }}
-  <div class="post-image-grid {{ $gridClass }}">
-    {{ range $remainingImgs }}
-    <div class="post-image-cell">{{ . | safeHTML }}</div>
-    {{ end }}
-  </div>
-  {{ end }}
-
-  <div class="photo-only-caption">{{ $content | replaceRE `<img[^>]+/?>` "" | replaceRE `(?s)<figure[^>]*>.*?</figure>` "" | trim " " | safeHTML }}</div>
-
-  <div class="photo-only-nav">
-    <div class="photo-byline-bar">
-      <div class="photo-byline-left">
-        <div class="photo-byline-avatar">
-          <img src="https://avatars.micro.blog/avatars/2022/138652.jpg" alt="Nick">
-        </div>
-        <div class="photo-byline-text">
-          <strong>Nick Broughall</strong>
-        </div>
-      </div>
-      <div class="photo-byline-date">{{ .Date.Format "2 January 2006" }}</div>
-    </div>
-    <div class="post-nav" style="margin-top:1rem;">
-      {{ with .Prev }}<a href="{{ .Permalink }}">← Previous</a>{{ end }}
-      {{ with .Next }}<a href="{{ .Permalink }}">Next →</a>{{ end }}
-    </div>
-  </div>
-
-  {{ if .Site.Params.include_conversation }}
-  <div class="post-conversation">
-    <script type="text/javascript" src="https://micro.blog/conversation.js?url={{ .Permalink }}"></script>
-  </div>
-  {{ end }}
-
-</div>
 
 {{ else }}
 <!-- ══ MICRO POST ══ -->
