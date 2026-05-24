@@ -1,8 +1,6 @@
 {{ $current := . }}
-{{ $isLonger := .Title }}
 {{ $related := slice }}
 
-{{/* Only include dated posts — excludes section index pages like /longer/, /photos/ etc */}}
 {{ $pool := slice }}
 {{ range .Site.RegularPages }}
   {{ if findRE `/\d{4}/` .Permalink }}
@@ -12,7 +10,7 @@
 
 {{ with $pool | intersect (.Site.RegularPages.Related .) }}
   {{ range . }}
-    {{ if and (ne .Permalink $current.Permalink) (eq (not .Title) (not $isLonger)) }}
+    {{ if ne .Permalink $current.Permalink }}
       {{ $related = $related | append . }}
     {{ end }}
   {{ end }}
@@ -20,7 +18,7 @@
 
 {{ if lt (len $related) 3 }}
   {{ range $pool }}
-    {{ if and (ne .Permalink $current.Permalink) (eq (not .Title) (not $isLonger)) (not (in $related .)) }}
+    {{ if and (ne .Permalink $current.Permalink) (not (in $related .)) }}
       {{ $related = $related | append . }}
     {{ end }}
   {{ end }}
@@ -32,11 +30,12 @@
 <div class="related-posts">
   <div class="related-posts-label">More from the stream</div>
   {{ range $related }}
-    {{ $isWatching := or (findRE "(?i)^watched" .Plain) (findRE "(?i)watching" (.Plain | truncate 60)) }}
-    {{ $isReading := or (findRE "(?i)^finished reading" .Plain) (findRE "(?i)^reading" (.Plain | truncate 60)) }}
-    {{ $dotClass := "nearby-dot" }}
-    {{ if $isWatching }}{{ $dotClass = "nearby-dot dot-watching" }}{{ end }}
-    {{ if $isReading }}{{ $dotClass = "nearby-dot dot-reading" }}{{ end }}
+    {{ $plain := .Plain }}
+    {{ $isWatching := or (findRE "(?i)^watched" $plain) (findRE "(?i)watching" ($plain | truncate 60)) }}
+    {{ $isReading := or (findRE "(?i)^finished reading" $plain) (findRE "(?i)^reading" ($plain | truncate 60)) }}
+    {{ $dotClass := "micro-dot dot-default" }}
+    {{ if $isWatching }}{{ $dotClass = "micro-dot dot-watching" }}{{ end }}
+    {{ if $isReading }}{{ $dotClass = "micro-dot dot-reading" }}{{ end }}
     <div class="nearby-item">
       <div class="{{ $dotClass }}"></div>
       <div>
