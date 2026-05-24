@@ -69,13 +69,14 @@
     </div>
   </footer>
 
-  {{ partial "related-posts.html" . }}
-
   {{ if .Site.Params.include_conversation }}
   <div class="post-conversation">
     <script type="text/javascript" src="https://micro.blog/conversation.js?url={{ .Permalink }}"></script>
   </div>
   {{ end }}
+
+  {{ partial "related-posts.html" . }}
+
 </article>
 
 {{ else }}
@@ -95,11 +96,6 @@
     </div>
   </div>
 
-  {{/*
-    Photo grid for images stored in .Params.photos only.
-    Guard: only render when $content has no <img> tags, to prevent duplicates
-    on posts where Micro.blog embeds images in both places.
-  */}}
   {{- if and (gt $paramPhotoCount 0) (eq $contentImageCount 0) -}}
   <div class="photo-grid{{ if eq $paramPhotoCount 1 }} photo-grid--single{{ end }}">
     {{- range $paramPhotos }}
@@ -108,10 +104,6 @@
   </div>
   {{- end -}}
 
-  {{/*
-    has-multi-images class triggers CSS grid layout for multiple <img> tags
-    embedded directly inside $content (the other Micro.blog image storage path).
-  */}}
   <div class="micro-content micro-content-full{{ if gt $contentImageCount 1 }} has-multi-images{{ end }}">
     {{ $content }}
   </div>
@@ -129,13 +121,13 @@
   </div>
   {{ end }}
 
-  {{ partial "related-posts.html" . }}
-
   {{ if .Site.Params.include_conversation }}
   <div class="post-conversation">
     <script type="text/javascript" src="https://micro.blog/conversation.js?url={{ .Permalink }}"></script>
   </div>
   {{ end }}
+
+  {{ partial "related-posts.html" . }}
 
 </div>
 
