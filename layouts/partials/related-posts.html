@@ -9,12 +9,13 @@
   {{ end }}
 {{ end }}
 
-{{/* Tag matching: add posts that share at least one tag */}}
+{{/* Tag matching — capture $poolPage before inner range or $ becomes page context */}}
 {{ range $pool }}
+  {{ $poolPage := . }}
   {{ $postTags := .Params.tags | default (slice) }}
   {{ range $currentTags }}
-    {{ if and (in $postTags .) (not (in $related $)) }}
-      {{ $related = $related | append $ }}
+    {{ if and (in $postTags .) (not (in $related $poolPage)) }}
+      {{ $related = $related | append $poolPage }}
     {{ end }}
   {{ end }}
 {{ end }}
@@ -34,16 +35,24 @@
 <div class="related-posts">
   <div class="related-posts-label">More from the stream</div>
   {{ range $related }}
-    {{ $plain := .Content | plainify }}
-    {{ $isWatching := or (findRE "(?i)^watched" $plain) (findRE "(?i)watching" ($plain | truncate 60)) }}
-    {{ $isReading := or (findRE "(?i)^finished reading" $plain) (findRE "(?i)^reading" ($plain | truncate 60)) }}
+    {{ $plain := .Content | plainify | htmlUnescape }}
+    {{ $tags := .Params.tags | default (slice) }}
+
     {{ $dotClass := "micro-dot dot-default" }}
-    {{ if $isWatching }}{{ $dotClass = "micro-dot dot-watching" }}{{ end }}
-    {{ if $isReading }}{{ $dotClass = "micro-dot dot-reading" }}{{ end }}
+    {{ if or (in $tags "music") (in $tags "Music") }}{{ $dotClass = "micro-dot dot-music" }}{{ end }}
+    {{ if or (in $tags "food") (in $tags "Food") (in $tags "cooking") }}{{ $dotClass = "micro-dot dot-food" }}{{ end }}
+    {{ if or (in $tags "sport") (in $tags "Sport") (in $tags "sports") }}{{ $dotClass = "micro-dot dot-sport" }}{{ end }}
+    {{ if or (in $tags "travel") (in $tags "Travel") }}{{ $dotClass = "micro-dot dot-travel" }}{{ end }}
+    {{ if or (in $tags "parenting") (in $tags "Parenting") }}{{ $dotClass = "micro-dot dot-parenting" }}{{ end }}
+    {{ if or (in $tags "games") (in $tags "Games") (in $tags "gaming") }}{{ $dotClass = "micro-dot dot-games" }}{{ end }}
+    {{ if or (in $tags "work") (in $tags "Work") }}{{ $dotClass = "micro-dot dot-work" }}{{ end }}
+    {{ if or (in $tags "watching") (in $tags "Watching") (findRE "(?i)^watched" $plain) (findRE "(?i)watching" ($plain | truncate 60)) }}{{ $dotClass = "micro-dot dot-watching" }}{{ end }}
+    {{ if or (in $tags "reading") (in $tags "Reading") (findRE "(?i)^finished reading" $plain) (findRE "(?i)^reading" ($plain | truncate 60)) }}{{ $dotClass = "micro-dot dot-reading" }}{{ end }}
+
     <div class="nearby-item">
       <div class="{{ $dotClass }}"></div>
       <div>
-        <a href="{{ .Permalink }}">{{ if .Title }}{{ .Title }}{{ else }}{{ .Content | plainify | truncate 80 }}{{ end }}</a>
+        <a href="{{ .Permalink }}">{{ if .Title }}{{ .Title }}{{ else }}{{ $plain | truncate 80 }}{{ end }}</a>
       </div>
     </div>
   {{ end }}
