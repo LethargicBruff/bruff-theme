@@ -69,6 +69,8 @@
     </div>
   </footer>
 
+  {{ partial "related-posts.html" . }}
+
   {{ if .Site.Params.include_conversation }}
   <div class="post-conversation">
     <script type="text/javascript" src="https://micro.blog/conversation.js?url={{ .Permalink }}"></script>
@@ -127,20 +129,7 @@
   </div>
   {{ end }}
 
-  <div class="nearby-posts">
-    <div class="nearby-label">More from the stream</div>
-    {{ $current := . }}
-    {{ range first 4 .Site.RegularPages }}
-      {{ if ne .Permalink $current.Permalink }}
-      <div class="nearby-item">
-        <div class="nearby-dot"></div>
-        <div>
-          <a href="{{ .Permalink }}">{{ if .Title }}{{ .Title }}{{ else }}{{ .Plain | truncate 80 }}{{ end }}</a>
-        </div>
-      </div>
-      {{ end }}
-    {{ end }}
-  </div>
+  {{ partial "related-posts.html" . }}
 
   {{ if .Site.Params.include_conversation }}
   <div class="post-conversation">
