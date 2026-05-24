@@ -1,24 +1,28 @@
 {{ $current := . }}
+{{ $currentTags := .Params.tags | default (slice) }}
 {{ $related := slice }}
 
 {{ $pool := slice }}
 {{ range .Site.RegularPages }}
-  {{ if findRE `/\d{4}/` .Permalink }}
+  {{ if and (findRE `/\d{4}/` .Permalink) (ne .Permalink $current.Permalink) }}
     {{ $pool = $pool | append . }}
   {{ end }}
 {{ end }}
 
-{{ with $pool | intersect (.Site.RegularPages.Related .) }}
-  {{ range . }}
-    {{ if ne .Permalink $current.Permalink }}
-      {{ $related = $related | append . }}
+{{/* Tag matching: add posts that share at least one tag */}}
+{{ range $pool }}
+  {{ $postTags := .Params.tags | default (slice) }}
+  {{ range $currentTags }}
+    {{ if and (in $postTags .) (not (in $related $)) }}
+      {{ $related = $related | append $ }}
     {{ end }}
   {{ end }}
 {{ end }}
 
+{{/* Fall back to recent posts if fewer than 3 tag matches */}}
 {{ if lt (len $related) 3 }}
   {{ range $pool }}
-    {{ if and (ne .Permalink $current.Permalink) (not (in $related .)) }}
+    {{ if not (in $related .) }}
       {{ $related = $related | append . }}
     {{ end }}
   {{ end }}
@@ -30,7 +34,7 @@
 <div class="related-posts">
   <div class="related-posts-label">More from the stream</div>
   {{ range $related }}
-    {{ $plain := .Plain }}
+    {{ $plain := .Content | plainify }}
     {{ $isWatching := or (findRE "(?i)^watched" $plain) (findRE "(?i)watching" ($plain | truncate 60)) }}
     {{ $isReading := or (findRE "(?i)^finished reading" $plain) (findRE "(?i)^reading" ($plain | truncate 60)) }}
     {{ $dotClass := "micro-dot dot-default" }}
@@ -39,7 +43,7 @@
     <div class="nearby-item">
       <div class="{{ $dotClass }}"></div>
       <div>
-        <a href="{{ .Permalink }}">{{ if .Title }}{{ .Title }}{{ else }}{{ .Plain | truncate 80 }}{{ end }}</a>
+        <a href="{{ .Permalink }}">{{ if .Title }}{{ .Title }}{{ else }}{{ .Content | plainify | truncate 80 }}{{ end }}</a>
       </div>
     </div>
   {{ end }}
