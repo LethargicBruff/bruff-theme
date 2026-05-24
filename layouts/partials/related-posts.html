@@ -1,0 +1,55 @@
+{{/* 
+  Related posts: tries tag-matched posts first, falls back to recent posts.
+  Excludes the current post and longer posts (titled) from micro context,
+  and vice versa — so related posts stay in the same content type.
+*/}}
+{{ $current := . }}
+{{ $isLonger := .Title }}
+{{ $related := slice }}
+
+{{ with .Site.RegularPages.Related . }}
+  {{ range . }}
+    {{ if and (ne .Permalink $current.Permalink) (eq (not .Title) (not $isLonger)) }}
+      {{ $related = $related | append . }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+{{/* Fall back to recent posts if fewer than 3 related */}}
+{{ if lt (len $related) 3 }}
+  {{ range .Site.RegularPages }}
+    {{ if and (ne .Permalink $current.Permalink) (eq (not .Title) (not $isLonger)) (not (in $related .)) }}
+      {{ $related = $related | append . }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+{{ $related = first 4 $related }}
+
+{{ if $related }}
+<div class="related-posts">
+  <div class="related-posts-label">More from the stream</div>
+  <div class="related-posts-grid">
+    {{ range $related }}
+    <a href="{{ .Permalink }}" class="related-post-card">
+      {{ if .Params.photos }}
+        <div class="related-post-thumb">
+          <img src="{{ (index .Params.photos 0).img }}" alt="" loading="lazy">
+        </div>
+      {{ else if findRE "<img" .Content }}
+        {{ $imgSrc := index (findRE `src="([^"]+)"` .Content) 0 }}
+        {{ with $imgSrc }}
+        <div class="related-post-thumb">
+          <img src="{{ replaceRE `src="([^"]+)"` "$1" . }}" alt="" loading="lazy">
+        </div>
+        {{ end }}
+      {{ end }}
+      <div class="related-post-text">
+        <span class="related-post-date">{{ .Date.Format "2 Jan 2006" }}</span>
+        <p>{{ if .Title }}{{ .Title }}{{ else }}{{ .Plain | truncate 80 }}{{ end }}</p>
+      </div>
+    </a>
+    {{ end }}
+  </div>
+</div>
+{{ end }}
