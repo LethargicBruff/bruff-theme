@@ -1,0 +1,51 @@
+{{ if .Site.Params.include_conversation }}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var conversation = document.querySelector('.post-conversation');
+  if (!conversation) return;
+
+  var observer = new MutationObserver(function () {
+    var posts = conversation.querySelectorAll('.microblog_post');
+    if (!posts.length) return;
+    observer.disconnect();
+    enhance(posts);
+  });
+
+  observer.observe(conversation, { childList: true, subtree: true });
+
+  function enhance(posts) {
+    var textarea = conversation.querySelector('.microblog_reply_textarea textarea');
+
+    posts.forEach(function (post) {
+      // Extract @username from the Micro.blog profile link
+      var userLink = post.querySelector('.microblog_user a');
+      var username = '';
+      if (userLink) {
+        var match = userLink.href.match(/micro\.blog\/([^\/\?#]+)/);
+        if (match) username = match[1];
+      }
+
+      // Indent posts that are replies (text starts with @)
+      var textEl = post.querySelector('.microblog_text');
+      if (textEl && textEl.textContent.trim().charAt(0) === '@') {
+        post.classList.add('microblog_reply_indent');
+      }
+
+      // Add reply button next to the timestamp
+      if (username && textarea) {
+        var btn = document.createElement('button');
+        btn.className = 'microblog_reply_btn';
+        btn.textContent = '↩ Reply';
+        btn.addEventListener('click', function () {
+          textarea.value = '@' + username + ' ';
+          textarea.focus();
+          textarea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+        var timeEl = post.querySelector('.microblog_time');
+        if (timeEl) timeEl.appendChild(btn);
+      }
+    });
+  }
+});
+</script>
+{{ end }}
