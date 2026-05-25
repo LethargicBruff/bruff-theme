@@ -749,7 +749,7 @@ img, video { max-width: 100%; height: auto; display: block; }
 .breadcrumb span { color: var(--border); }
 
 .longer-post {
-  max-width: 720px;
+  max-width: 860px;
   margin: 0 auto;
   padding: 0 2rem 5rem;
 }
@@ -964,7 +964,7 @@ img, video { max-width: 100%; height: auto; display: block; }
 /* ── MICRO POST PAGE ─────────────────────── */
 
 .micro-post-page {
-  max-width: 580px;
+  max-width: 740px;
   margin: 0 auto;
   padding: 0 2rem 5rem;
 }
