@@ -4,20 +4,13 @@ document.addEventListener('DOMContentLoaded', function () {
   var conversation = document.querySelector('.post-conversation');
   if (!conversation) return;
 
-  var observer = new MutationObserver(function () {
-    var posts = conversation.querySelectorAll('.microblog_post');
-    if (!posts.length) return;
-    observer.disconnect();
-    enhance(posts);
-  });
-
-  observer.observe(conversation, { childList: true, subtree: true });
-
   function enhance(posts) {
     var textarea = conversation.querySelector('.microblog_reply_textarea textarea');
 
     posts.forEach(function (post) {
-      // Extract username from the timestamp link: micro.blog/username/postid
+      if (post.dataset.replyEnhanced) return;
+      post.dataset.replyEnhanced = '1';
+
       var timeLink = post.querySelector('.microblog_time a');
       var username = '';
       if (timeLink) {
@@ -25,13 +18,11 @@ document.addEventListener('DOMContentLoaded', function () {
         if (match) username = match[1];
       }
 
-      // Indent posts that are replies (text starts with @)
       var textEl = post.querySelector('.microblog_text');
       if (textEl && textEl.textContent.trim().charAt(0) === '@') {
         post.classList.add('microblog_reply_indent');
       }
 
-      // Add reply button next to the timestamp
       if (username && textarea) {
         var btn = document.createElement('button');
         btn.className = 'microblog_reply_btn';
@@ -46,6 +37,23 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
   }
+
+  // Posts already rendered — run immediately
+  var existing = conversation.querySelectorAll('.microblog_post');
+  if (existing.length) {
+    enhance(existing);
+    return;
+  }
+
+  // Posts not yet rendered — wait for conversation.js
+  var observer = new MutationObserver(function () {
+    var posts = conversation.querySelectorAll('.microblog_post');
+    if (!posts.length) return;
+    observer.disconnect();
+    enhance(posts);
+  });
+
+  observer.observe(conversation, { childList: true, subtree: true });
 });
 </script>
 {{ end }}
