@@ -426,7 +426,8 @@ img, video { max-width: 100%; height: auto; display: block; }
   border-radius: 8px;
   width: 100%;
   height: auto;
-  object-fit: unset;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
 }
 
 .micro-footer {
