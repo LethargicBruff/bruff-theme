@@ -1,18 +1,24 @@
 {{ $current := . }}
-{{ $currentTags := .Params.tags | default (slice) }}
+{{ $currentTags := .Params.categories | default (slice) }}
 {{ $related := slice }}
 
 {{ $pool := slice }}
 {{ range .Site.RegularPages }}
-  {{ if and (findRE `/\d{4}/` .Permalink) (ne .Permalink $current.Permalink) }}
-    {{ $pool = $pool | append . }}
+  {{ $p := . }}
+  {{ $pPlain := .Content | plainify | htmlUnescape }}
+  {{ if and
+    (findRE `/\d{4}/` .Permalink)
+    (ne .Permalink $current.Permalink)
+    (not (findRE `^@` $pPlain))
+  }}
+    {{ $pool = $pool | append $p }}
   {{ end }}
 {{ end }}
 
-{{/* Tag matching — capture $poolPage before inner range or $ becomes page context */}}
+{{/* Category matching */}}
 {{ range $pool }}
   {{ $poolPage := . }}
-  {{ $postTags := .Params.tags | default (slice) }}
+  {{ $postTags := .Params.categories | default (slice) }}
   {{ range $currentTags }}
     {{ if and (in $postTags .) (not (in $related $poolPage)) }}
       {{ $related = $related | append $poolPage }}
@@ -20,7 +26,7 @@
   {{ end }}
 {{ end }}
 
-{{/* Fall back to recent posts if fewer than 3 tag matches */}}
+{{/* Fall back to recent posts if fewer than 3 category matches */}}
 {{ if lt (len $related) 3 }}
   {{ range $pool }}
     {{ if not (in $related .) }}
@@ -36,18 +42,18 @@
   <div class="related-posts-label">More from the stream</div>
   {{ range $related }}
     {{ $plain := .Content | plainify | htmlUnescape }}
-    {{ $tags := .Params.tags | default (slice) }}
+    {{ $cats := .Params.categories | default (slice) }}
 
     {{ $dotClass := "micro-dot dot-default" }}
-    {{ if or (in $tags "music") (in $tags "Music") }}{{ $dotClass = "micro-dot dot-music" }}{{ end }}
-    {{ if or (in $tags "food") (in $tags "Food") (in $tags "cooking") }}{{ $dotClass = "micro-dot dot-food" }}{{ end }}
-    {{ if or (in $tags "sport") (in $tags "Sport") (in $tags "sports") }}{{ $dotClass = "micro-dot dot-sport" }}{{ end }}
-    {{ if or (in $tags "travel") (in $tags "Travel") }}{{ $dotClass = "micro-dot dot-travel" }}{{ end }}
-    {{ if or (in $tags "parenting") (in $tags "Parenting") }}{{ $dotClass = "micro-dot dot-parenting" }}{{ end }}
-    {{ if or (in $tags "games") (in $tags "Games") (in $tags "gaming") }}{{ $dotClass = "micro-dot dot-games" }}{{ end }}
-    {{ if or (in $tags "work") (in $tags "Work") }}{{ $dotClass = "micro-dot dot-work" }}{{ end }}
-    {{ if or (in $tags "watching") (in $tags "Watching") (findRE "(?i)^watched" $plain) (findRE "(?i)watching" ($plain | truncate 60)) }}{{ $dotClass = "micro-dot dot-watching" }}{{ end }}
-    {{ if or (in $tags "reading") (in $tags "Reading") (findRE "(?i)^finished reading" $plain) (findRE "(?i)^reading" ($plain | truncate 60)) }}{{ $dotClass = "micro-dot dot-reading" }}{{ end }}
+    {{ if or (in $cats "music") (in $cats "Music") }}{{ $dotClass = "micro-dot dot-music" }}{{ end }}
+    {{ if or (in $cats "food") (in $cats "Food") (in $cats "cooking") }}{{ $dotClass = "micro-dot dot-food" }}{{ end }}
+    {{ if or (in $cats "sport") (in $cats "Sport") (in $cats "sports") }}{{ $dotClass = "micro-dot dot-sport" }}{{ end }}
+    {{ if or (in $cats "travel") (in $cats "Travel") }}{{ $dotClass = "micro-dot dot-travel" }}{{ end }}
+    {{ if or (in $cats "parenting") (in $cats "Parenting") }}{{ $dotClass = "micro-dot dot-parenting" }}{{ end }}
+    {{ if or (in $cats "games") (in $cats "Games") (in $cats "gaming") }}{{ $dotClass = "micro-dot dot-games" }}{{ end }}
+    {{ if or (in $cats "work") (in $cats "Work") }}{{ $dotClass = "micro-dot dot-work" }}{{ end }}
+    {{ if or (in $cats "watching") (in $cats "Watching") (findRE "(?i)^watched" $plain) (findRE "(?i)watching" ($plain | truncate 60)) }}{{ $dotClass = "micro-dot dot-watching" }}{{ end }}
+    {{ if or (in $cats "reading") (in $cats "Reading") (findRE "(?i)^finished reading" $plain) (findRE "(?i)^reading" ($plain | truncate 60)) }}{{ $dotClass = "micro-dot dot-reading" }}{{ end }}
 
     <div class="nearby-item">
       <div class="{{ $dotClass }}"></div>
