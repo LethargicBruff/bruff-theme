@@ -17,11 +17,11 @@ document.addEventListener('DOMContentLoaded', function () {
     var textarea = conversation.querySelector('.microblog_reply_textarea textarea');
 
     posts.forEach(function (post) {
-      // Extract @username from the Micro.blog profile link
-      var userLink = post.querySelector('.microblog_user a');
+      // Extract username from the timestamp link: micro.blog/username/postid
+      var timeLink = post.querySelector('.microblog_time a');
       var username = '';
-      if (userLink) {
-        var match = userLink.href.match(/micro\.blog\/([^\/\?#]+)/);
+      if (timeLink) {
+        var match = timeLink.href.match(/micro\.blog\/([^\/]+)\/\d+/);
         if (match) username = match[1];
       }
 
