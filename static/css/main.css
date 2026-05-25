@@ -1929,3 +1929,28 @@ a.post-tag:hover {
   text-transform: none;
   margin-bottom: 0.5rem;
 }
+
+/* ── CONVERSATION REPLIES ────────────────── */
+
+.microblog_reply_indent {
+  margin-left: 1.5rem;
+  padding-left: 1rem;
+  border-left: 2px solid var(--border);
+}
+
+.microblog_reply_btn {
+  background: none;
+  border: none;
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  color: var(--ink-faint);
+  cursor: pointer;
+  padding: 0;
+  margin-left: 0.75rem;
+  letter-spacing: 0.03em;
+  transition: color 0.15s;
+}
+
+.microblog_reply_btn:hover {
+  color: var(--accent);
+}
