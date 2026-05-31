@@ -1741,8 +1741,6 @@ a.post-tag:hover {
 
 .photo-card-grid-stream {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(2, 1fr);
   gap: 3px;
   border-radius: 8px;
   overflow: hidden;
@@ -1759,9 +1757,32 @@ a.post-tag:hover {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
 }
 
-.photo-card-grid-stream .photo-cell:first-child {
+/* 2 images: side by side */
+.photo-card-grid-stream.grid-2 {
+  grid-template-columns: 1fr 1fr;
+}
+
+/* 3 images: three equal columns */
+.photo-card-grid-stream.grid-3 {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+/* 4 images: 2x2 grid */
+.photo-card-grid-stream.grid-4 {
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+
+/* 5+ images: tall first image, 2x2 on the right */
+.photo-card-grid-stream.grid-many {
+  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+
+.photo-card-grid-stream.grid-many .photo-cell:first-child {
   grid-row: span 2;
 }
 
