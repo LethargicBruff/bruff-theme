@@ -112,6 +112,16 @@
       {{ $imgs := findRE `<img[^>]+>` $content }}
       {{ $count := len $imgs }}
       {{ if gt $count 1 }}
+  {{ $gridClass := "photo-card-grid-stream" }}
+  {{ if eq $count 2 }}{{ $gridClass = "photo-card-grid-stream grid-2" }}{{ end }}
+  {{ if eq $count 3 }}{{ $gridClass = "photo-card-grid-stream grid-3" }}{{ end }}
+  {{ if eq $count 4 }}{{ $gridClass = "photo-card-grid-stream grid-4" }}{{ end }}
+  {{ if ge $count 5 }}{{ $gridClass = "photo-card-grid-stream grid-many" }}{{ end }}
+  <div class="{{ $gridClass }}">
+    {{ range first 5 $imgs }}
+      <div class="photo-cell">{{ . | safeHTML }}</div>
+    {{ end }}
+  </div>
     <div class="photo-card-grid-stream">
       {{ range first 5 $imgs }}
         <div class="photo-cell">{{ . | safeHTML }}</div>
