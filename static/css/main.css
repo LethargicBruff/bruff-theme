@@ -270,7 +270,6 @@ img, video { max-width: 100%; height: auto; display: block; }
 }
 
 /* ── CATEGORY COLOURS ── */
-/* Each category has a pill colour and a matching dot colour */
 
 .tag-longer    { background: #FFF7ED; color: #C2410C; }
 .tag-music     { background: #F3E8FF; color: #7E22CE; }
@@ -284,7 +283,6 @@ img, video { max-width: 100%; height: auto; display: block; }
 .tag-travel    { background: #F0FDFA; color: #0F766E; }
 .tag-work      { background: #F8FAFC; color: #475569; }
 
-/* Dot colours match their category pill */
 .micro-dot {
   width: 8px;
   height: 8px;
@@ -1443,13 +1441,11 @@ a.post-tag:hover {
   display: block;
 }
 
-/* Move form to top */
 .microblog_reply_form {
   order: -1;
   margin-bottom: 2rem;
 }
 
-/* Reply form */
 .microblog_reply_signin {
   font-size: 0.82rem;
   color: var(--ink-muted);
@@ -1505,7 +1501,6 @@ a.post-tag:hover {
 
 .microblog_reply_button input[type="submit"]:hover { opacity: 0.8; }
 
-/* Individual posts */
 .microblog_post {
   padding: 1rem 0;
   border-top: 1px solid var(--border);
@@ -1516,10 +1511,10 @@ a.post-tag:hover {
 }
 
 .microblog_user {
-  grid-column: 1;
-  grid-row: 1;
+  grid-column: 1 / 3;
   display: flex;
   align-items: center;
+  gap: 0.6rem;
 }
 
 .microblog_avatar {
@@ -1533,22 +1528,9 @@ a.post-tag:hover {
 }
 
 .microblog_fullname {
-  grid-column: 2;
-  grid-row: 1;
   font-weight: 500;
   font-size: 0.85rem;
   color: var(--ink);
-  display: flex;
-  align-items: center;
-  padding-left: 0;
-}
-
-/* Pull fullname next to avatar */
-.microblog_user {
-  grid-column: 1 / 3;
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
 }
 
 .microblog_text {
@@ -1557,7 +1539,6 @@ a.post-tag:hover {
   font-size: 0.9rem;
   line-height: 1.55;
   color: var(--ink);
-  padding-left: 0;
   margin-top: 0.35rem;
 }
 
@@ -1625,9 +1606,7 @@ a.post-tag:hover {
 }
 
 @media (max-width: 900px) {
-  .photos-grid-container {
-    columns: 3 !important;
-  }
+  .photos-grid-container { columns: 3 !important; }
 }
 
 @media (max-width: 680px) {
@@ -1635,20 +1614,9 @@ a.post-tag:hover {
     columns: 2 !important;
     column-gap: 4px !important;
   }
-
   .photos-grid-container a {
     margin-bottom: 4px !important;
   }
-}
-
-.micro-content-full img,
-.micro-content-full video {
-  margin-top: 0.75rem;
-  border-radius: 8px;
-  width: 100%;
-  height: auto !important;
-  max-height: none !important;
-  object-fit: unset !important;
 }
 
 /* ── PHOTO-ONLY POST PAGE ────────────────────── */
@@ -1697,21 +1665,10 @@ a.post-tag:hover {
   margin-bottom: 8px;
 }
 
-.post-image-grid.photo-grid-2 {
-  grid-template-columns: 1fr 1fr;
-}
-
-.post-image-grid.photo-grid-3 {
-  grid-template-columns: 1fr 1fr 1fr;
-}
-
-.post-image-grid.photo-grid-4 {
-  grid-template-columns: 1fr 1fr;
-}
-
-.post-image-grid.photo-grid-many {
-  grid-template-columns: 1fr 1fr 1fr;
-}
+.post-image-grid.photo-grid-2 { grid-template-columns: 1fr 1fr; }
+.post-image-grid.photo-grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+.post-image-grid.photo-grid-4 { grid-template-columns: 1fr 1fr; }
+.post-image-grid.photo-grid-many { grid-template-columns: 1fr 1fr 1fr; }
 
 .post-image-cell {
   overflow: hidden;
@@ -1750,26 +1707,22 @@ a.post-tag:hover {
 
 .photo-card-grid-stream.grid-2 {
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr;
-  height: 260px;
+  grid-template-rows: 260px;
 }
 
 .photo-card-grid-stream.grid-3 {
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr;
-  height: 260px;
+  grid-template-rows: 260px;
 }
 
 .photo-card-grid-stream.grid-4 {
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  height: 380px;
+  grid-template-rows: 190px 190px;
 }
 
 .photo-card-grid-stream.grid-many {
   grid-template-columns: 2fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  height: 300px;
+  grid-template-rows: 148px 148px;
 }
 
 .photo-card-grid-stream.grid-many .photo-cell:first-child {
@@ -1779,7 +1732,6 @@ a.post-tag:hover {
 .photo-card-grid-stream .photo-cell {
   overflow: hidden;
   background: var(--bg-subtle);
-  min-height: 0;
 }
 
 .photo-card-grid-stream .photo-cell img {
@@ -1790,10 +1742,22 @@ a.post-tag:hover {
 }
 
 @media (max-width: 680px) {
-  .photo-card-grid-stream.grid-2,
-  .photo-card-grid-stream.grid-3,
-  .photo-card-grid-stream.grid-many { height: 180px; }
-  .photo-card-grid-stream.grid-4 { height: 260px; }
+  .photo-card-grid-stream.grid-2 { grid-template-rows: 180px; }
+  .photo-card-grid-stream.grid-3 { grid-template-rows: 180px; }
+  .photo-card-grid-stream.grid-4 { grid-template-rows: 130px 130px; }
+  .photo-card-grid-stream.grid-many { grid-template-rows: 100px 100px; }
+}
+
+/* ── MICRO CONTENT FULL ────────────────────── */
+
+.micro-content-full img,
+.micro-content-full video {
+  margin-top: 0.75rem;
+  border-radius: 8px;
+  width: 100%;
+  height: auto !important;
+  max-height: none !important;
+  object-fit: unset !important;
 }
 
 .micro-content-full img {
@@ -1804,11 +1768,7 @@ a.post-tag:hover {
   margin-bottom: 4px;
 }
 
-/* =====================================================
-   Photo grid — add to your theme CSS
-   ===================================================== */
-
-/* --- .Params.photos path: images rendered by template --- */
+/* ── PHOTO GRID (single post page) ────────────────────── */
 
 .photo-grid {
   display: grid;
@@ -1824,7 +1784,6 @@ a.post-tag:hover {
   object-fit: cover;
 }
 
-/* Single photo: full width, natural height */
 .photo-grid.photo-grid--single {
   display: block;
 }
@@ -1836,21 +1795,6 @@ a.post-tag:hover {
   object-fit: initial;
 }
 
-/* --- $content path: multiple <img> tags embedded in content --- */
-
-/*
-  When $content has 2+ images, Hugo wraps them in <p> tags.
-  Two layouts are possible depending on how Micro.blog stored them:
-
-  A) All images in one <p>:  <p><img><img><img></p>
-     — display: contents strips the <p>, imgs become direct grid children
-
-  B) Each image in its own <p>:  <p><img></p><p><img></p><p><img></p>
-     — same fix: display: contents on each image-only <p>
-
-  Text paragraphs span all three columns so they read full-width.
-*/
-
 .micro-content-full.has-multi-images {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -1858,14 +1802,11 @@ a.post-tag:hover {
   margin-bottom: 1.25rem;
 }
 
-/* Text paragraphs (no images): span full width */
 .micro-content-full.has-multi-images p:not(:has(img)) {
   grid-column: 1 / -1;
   margin: 0 0 0.75rem;
 }
 
-/* Image-only paragraphs: strip the wrapper so <img> tags
-   become direct grid children and fill columns naturally */
 .micro-content-full.has-multi-images p:has(img) {
   display: contents;
 }
@@ -1877,8 +1818,6 @@ a.post-tag:hover {
   object-fit: cover;
 }
 
-/* --- Responsive: 2 columns on narrow screens --- */
-
 @media (max-width: 480px) {
   .photo-grid,
   .micro-content-full.has-multi-images {
@@ -1886,21 +1825,15 @@ a.post-tag:hover {
   }
 }
 
-/* =====================================================
-   Add these rules to photo-grid.css (or your main CSS)
-   ===================================================== */
-
-/* The JS wraps each grid <img> in an <a class="glightbox">.
-   These rules keep the grid layout intact after that change. */
+/* ── GLIGHTBOX GRID ────────────────────── */
 
 .photo-grid a.glightbox,
 .micro-content-full.has-multi-images a.glightbox {
   display: block;
-  line-height: 0;     /* kills the gap that inline elements leave below img */
+  line-height: 0;
   cursor: zoom-in;
 }
 
-/* Subtle hover state so it's clear the images are tappable */
 .photo-grid a.glightbox img,
 .micro-content-full.has-multi-images a.glightbox img {
   transition: opacity 0.15s ease;
@@ -1911,13 +1844,13 @@ a.post-tag:hover {
   opacity: 0.88;
 }
 
-/* Longer posts: first image full width */
+/* ── LONGER POST IMAGES ────────────────────── */
+
 .post-body > p:has(img) img {
   width: 100%;
   height: auto;
 }
 
-/* Longer posts: subsequent images in a grid */
 .post-body-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -1942,9 +1875,7 @@ a.post-tag:hover {
   }
 }
 
-/* =====================================================
-   Related posts grid — add to main.css
-   ===================================================== */
+/* ── RELATED POSTS ────────────────────── */
 
 .related-posts {
   margin-top: 3rem;
@@ -1985,11 +1916,4 @@ a.post-tag:hover {
 
 .microblog_reply_btn:hover {
   color: var(--accent);
-}
-
-.photo-card-grid-stream .photo-cell img {
-  width: 100%;
-  height: 100% !important;
-  object-fit: cover;
-  display: block;
 }
